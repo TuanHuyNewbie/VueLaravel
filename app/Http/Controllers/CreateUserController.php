@@ -68,7 +68,6 @@ class CreateUserController extends Controller
         // return response()->json($res);
         $search=[];
         $textsearch && array_push($search,['name','like','%'.$textsearch.'%']);
-      
         $res = DB::table('name2s')->where($search)->paginate($pagelimit,'*','',$page);
         return $res;
     }

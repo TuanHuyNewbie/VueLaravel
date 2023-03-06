@@ -17,6 +17,7 @@ class CreateName2sTable extends Migration
             $table->id();
             $table->longText('name');
             $table->timestamps();
+            $table->primary('id');
         });
     }
 

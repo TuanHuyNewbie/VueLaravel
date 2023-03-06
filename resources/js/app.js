@@ -12,6 +12,8 @@ import CreateComponent from './components/CreateComponent';
 import ExampleComponent from './components/ExampleComponent';
 import GetComponent from './components/GetComponent';
 import EditComponent from './components/EditComponent';
+import LoginComponent from './components/LoginComponent';
+
 // import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -20,7 +22,7 @@ library.add(fas)
 Vue.use(Vuetify)
 const vuetify= new Vuetify({
     theme: {
-        primary: '#ee44aa',
+        primary: '#1976D2',
         secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
@@ -29,7 +31,7 @@ const vuetify= new Vuetify({
         warning: '#FFC107',
       },
       icons: {
-        iconfont: 'faSvg',
+        iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
       },
       options: {
         customProperties: true,
@@ -58,6 +60,11 @@ const routes = [
         name: "Edit User",
         component: EditComponent
     },
+    {
+        path: "/login",
+        name: "Login",
+        component: LoginComponent
+    },
     
 ]
 
@@ -69,11 +76,5 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    vuetify:vuetify,
+    vuetify: vuetify,
 });
-
-
-
-
-
-

@@ -4,12 +4,12 @@
         <div id="stress" class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default" style="font-size: 50px;" @click="createUser">Create User</button>
         <!-- <button type="button" class="btn btn-default" style="font-size: 50px;">Middle</button>
-                    <button type="button" class="btn btn-default" style="font-size: 50px;">Right</button> -->
+                        <button type="button" class="btn btn-default" style="font-size: 50px;">Right</button> -->
         </div>
         <div class="col-lg-6">
             <div class="input-group">
 
-                <v-text-field label="Search" @keydown.enter=" pagination()" v-model="textSearch" outlined dense
+                <v-text-field label="Search" @keydown.enter="pagination()" v-model="textSearch" outlined dense
                     style="width: 400px; margin-top: 2%; margin-left: 20%;"></v-text-field>
                 <!-- <v-btn @click="searchUser" style="margin-top: 2%;">Search</v-btn> -->
             </div>
@@ -39,11 +39,15 @@
         <div class="row">
             <div class="col-md-5">
                 <!-- <div style="box-decoration-break: inherit;"> -->
-                <select v-model="selected1" style="color: darkgreen; margin-left: 500px; width: 50px;">
+                <!-- <select v-model="selected1" style="color: darkblue; margin-left: 500px; width: 50px;">
                     <option>2</option>
                     <option>5</option>
                     <option>All</option>
-                </select>
+                </select> -->
+                <v-select
+                    :items="['2', 5]"
+                    label="Standard"
+                ></v-select>
             </div>
             <div class="col-md-7">
                 <v-pagination v-model="page" :length="selectedLimit"></v-pagination>
@@ -61,19 +65,16 @@ export default {
             page: 1,
             limit: '10',
             selected1: 5,
-            selectedLimit:0
+            selectedLimit: 0
         }
     },
-    watch:{
-        selected1(e){
-           this.pagination()
-        },
-        page(e){
+    watch: {
+        selected1(e) {
             this.pagination()
         },
-        // textSearch(e){
-        //     this.pagination()
-        // }
+        page(e) {
+            this.pagination()
+        },
     },
     methods: {
         async getAllUser() {
@@ -94,19 +95,11 @@ export default {
         createUser() {
             this.$router.push({ name: 'Create' })
         },
-        // async searchUser() {
-        //     let param = {}
-        //     this.textSearch && (param.TextSearch = this.textSearch)
-        //     await this.axios.get('/api/search-user', { params: param })
-        //         .then((response) => {
-        //             this.users = response.data;
-        //         })
-        // },
         async pagination() {
             let param = {}
-            param.TextSearch = this.textSearch?this.textSearch:null
-            param.Page = this.page?this.page:1
-            param.PageLimit = this.selected1?this.selected1:5
+            param.TextSearch = this.textSearch ? this.textSearch : null
+            param.Page = this.page ? this.page : 1
+            param.PageLimit = this.selected1 ? this.selected1 : 5
             await this.axios.get('/api/get-page', { params: param })
                 .then((response) => {
                     this.users = response.data.data;
