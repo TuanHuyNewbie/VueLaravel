@@ -13,6 +13,7 @@ import ExampleComponent from './components/ExampleComponent';
 import GetComponent from './components/GetComponent';
 import EditComponent from './components/EditComponent';
 import LoginComponent from './components/LoginComponent';
+import IndexComponent from './components/IndexComponent';
 
 // import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios);
@@ -65,6 +66,11 @@ const routes = [
         name: "Login",
         component: LoginComponent
     },
+    {
+        path: "/index",
+        name: "Index",
+        component: IndexComponent
+    }
     
 ]
 
