@@ -104,3 +104,16 @@ Route::get('/get-one-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@getOneLoC
 Route::put('/update-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@updateLoCanhTac');
 Route::delete('/delete-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@deleteLoCanhTac');
 Route::get('/search-lo-canh-tac', 'LoCanhTacController@searchLoCanhTac');
+
+
+
+/*-------------------------------------------
+___________________Nguoi Dung________________
+---------------------------------------------*/
+
+Route::post('/create-nguoi-dung', 'NguoiDungController@createNguoiDung');
+Route::get('/get-all-nguoi-dung', 'NguoiDungController@getAllNguoiDung');
+Route::get('/get-one-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@getOneNguoiDung');
+Route::put('/update-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@updateNguoiDung');
+Route::delete('/delete-nguoi-dung/{id_nguoidung}', 'NguoiDungController@deleteNguoiDung');
+Route::get('/search-nguoi-dung', 'NguoiDungController@searchNguoiDung');

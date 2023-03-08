@@ -14,7 +14,9 @@ import GetComponent from './components/GetComponent';
 import EditComponent from './components/EditComponent';
 import LoginComponent from './components/LoginComponent';
 import IndexComponent from './components/IndexComponent';
-
+import NguoiDungComponent from './components/NguoiDungComponent';
+import DanhSachComponent from './components/DanhSachComponent';
+import updateNguoiDungComponent from './components/updateNguoiDungComponent';
 // import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -70,6 +72,21 @@ const routes = [
         path: "/index",
         name: "Index",
         component: IndexComponent
+    },
+    {
+        path: "/nguoi-dung",
+        name: "Nguoi Dung",
+        component: NguoiDungComponent
+    },
+    {
+        path: "/danh-sach-nguoi-dung",
+        name: "Danh Sach Nguoi Dung",
+        component: DanhSachComponent
+    },
+    {
+        path: "/update-nguoi-dung/:id_nguoi_dung",
+        name: "Update Nguoi Dung",
+        component: updateNguoiDungComponent
     }
     
 ]
