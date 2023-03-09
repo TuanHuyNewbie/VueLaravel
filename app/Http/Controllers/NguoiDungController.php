@@ -10,7 +10,11 @@ class NguoiDungController extends Controller
 {
     public function createNguoiDung(Request $request){
         $file = $request->file('hinh_anh');
-        $file->move(public_path('/img'), $file->getClientOriginalName());
+        $file->move(public_path('\img'), $file->getClientOriginalName());
+        // $dir = (string)public_path('\img\\');
+        // $fileName = (string)$file->getClientOriginalName();
+        // $pathImage = $dir.$fileName;
+        // dd($pathImage);
         $query = 'INSERT INTO `Nguoi_Dung`(
             `ten_dang_nhap`, 
             `mat_khau`, 
@@ -39,7 +43,7 @@ class NguoiDungController extends Controller
     public function getOneNguoiDung($id_nguoi_dung){
         $query ='SELECT * FROM `Nguoi_Dung` WHERE `id_nguoi_dung` = '.$id_nguoi_dung;
         $res = DB::select($query);
-        return response()->json(['data'=>$res]);
+        return response()->json($res);
     }
     public function updateNguoiDung($id_nguoi_dung, Request $request){
         $query = 'UPDATE `Nguoi_Dung` SET 

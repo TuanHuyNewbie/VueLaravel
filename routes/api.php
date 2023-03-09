@@ -114,6 +114,6 @@ ___________________Nguoi Dung________________
 Route::post('/create-nguoi-dung', 'NguoiDungController@createNguoiDung');
 Route::get('/get-all-nguoi-dung', 'NguoiDungController@getAllNguoiDung');
 Route::get('/get-one-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@getOneNguoiDung');
-Route::put('/update-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@updateNguoiDung');
+Route::post('/update-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@updateNguoiDung');
 Route::delete('/delete-nguoi-dung/{id_nguoidung}', 'NguoiDungController@deleteNguoiDung');
 Route::get('/search-nguoi-dung', 'NguoiDungController@searchNguoiDung');
