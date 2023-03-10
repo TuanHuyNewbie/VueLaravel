@@ -17,19 +17,8 @@
                         <v-btn @click="changeAction(item.id_nguoi_dung)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_nguoi_dung === idAction && action">
                             <v-btn color="primary" @click="update(item.id_nguoi_dung)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error"><v-icon>fa fa-times</v-icon></v-btn>
+                            <v-btn color="error" @click="deleteNguoiDung(item.id_nguoi_dung)"><v-icon>fa fa-times</v-icon></v-btn>
                         </div>
-                        <!-- <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn  v-bind="attrs"
-                                v-on="on"><v-icon>fa fa-list</v-icon></v-btn>
-                               
-                            </template>
-                            <v-list>
-                                <v-btn color="primary" @click="checkId(item.id_nguoi_dung)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error"><v-icon>fa fa-times</v-icon></v-btn>
-                            </v-list>
-                            </v-menu> -->
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -94,8 +83,14 @@ export default {
             })
         },
         update(id) {
-            console.log(id);
+            // console.log(id);
             this.$router.push({ path: `cap-nhat-nguoi-dung/${id}`, params:{ id_nguoi_dung: id } });
+        },
+        async deleteNguoiDung(id){
+            await this.axios.delete(`/api/delete-nguoi-dung/${id}`)
+                .then((reponse) => {
+                    this.getAllUser();
+                });
         }
     },
     async created() {

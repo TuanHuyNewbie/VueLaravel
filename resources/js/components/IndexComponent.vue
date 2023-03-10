@@ -6,21 +6,17 @@
                     <img src="https://api.rynan.vn/VDAPES/images/logo.png"
                         style="margin-left:30px ;width: 240px; align-content: center; padding: 10px;">
                 </div>
-                <div style="height: 170px; margin: 0; padding: 0;">
+                <div style="height: 90px; margin: 0; padding: 0; ">
                     <div style="padding: 10px;">
-                        <div class="elevation-4" style="height: 60px;">
+                        <div class="elevation-4" style="height: 60px; padding-top: 10px;">
                             <b style="color: darkgreen; font-size: 20px;">{{ $route.meta.title }}</b>
                         </div>
                     </div>
-                    <div style="padding: 0px 10px 10px 10px;">
-                        <div class="elevation-4" style="height: 60px; display: flex;">
-                            <b style="color: blue; font-size: 20px; align-content: center;">{{ }}</b>
-                        </div>
-                    </div>
+                    
                 </div>
-                <div style="margin: 0; padding: 0; width: 100%; height: calc(100vh - 240px); overflow: scroll">
-                    <router-view></router-view>
-                </div>
+
+                <router-view></router-view>
+
             </v-col>
             <v-col cols="2">
                 <v-navigation-drawer absolute dark style="width: auto; height: 100vh;">
@@ -54,32 +50,50 @@
                                     <template v-slot:activator>
                                         <v-list-item-title>Quản Lí Người Dùng</v-list-item-title>
                                     </template>
-                                    <v-list-item :key="1" @click="changeTittle('Quản Lí Người Dùng / Danh Sách Người Dùng')" link href="/#/home/danh-sach-nguoi-dung" class="pl-10">
+                                    <v-list-item :key="1" @click="changeTittle('Quản Lí Người Dùng / Danh Sách Người Dùng')"
+                                        link href="/#/home/danh-sach-nguoi-dung" class="pl-10">
                                         <v-list-item-title style="text-align: left;">Danh Sách Người
                                             Dùng</v-list-item-title>
                                         <!-- <v-list-item-icon>
                                             <v-icon v-text="icon"></v-icon>
                                         </v-list-item-icon> -->
                                     </v-list-item>
-                                    <v-list-item :key="1" @click="changeTittle('Quản Lí Người Dùng / Thêm Người Dùng Mới')" link href="/#/home/tao-nguoi-dung" class="pl-10">
+                                    <v-list-item :key="1" @click="changeTittle('Quản Lí Người Dùng / Thêm Người Dùng Mới')"
+                                        link href="/#/home/tao-nguoi-dung" class="pl-10">
                                         <v-list-item-title style="text-align: left;">Thêm Người
                                             Dùng Mới</v-list-item-title>
-                                        <!-- <v-list-item-icon>
-                                            <v-icon v-text="icon"></v-icon>
-                                        </v-list-item-icon> -->
                                     </v-list-item>
                                 </v-list-group>
                                 <v-list-group :value="false">
                                     <template v-slot:activator>
-                                        <v-list-item-title>Quản Lí Người Dùng</v-list-item-title>
+                                        <v-list-item-title>Quản Lí Nông Trường</v-list-item-title>
                                     </template>
-                                    <v-list-item v-for="([title, icon], i) in admins" :key="i" :title="title"
-                                        :prepend-icon="icon" :value="title"></v-list-item>
-                                    <v-list-item :key="1" link>
-                                        <v-list-item-title style="text-align: left;">sdas</v-list-item-title>
-                                        <v-list-item-icon>
-                                            <v-icon v-text="icon"></v-icon>
-                                        </v-list-item-icon>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-cong-ty" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Công Ty</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-nong-truong" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Nông Trường</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-lo-canh-tac" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Lô Canh Tác</v-list-item-title>
+                                    </v-list-item>
+                                </v-list-group>
+                                <v-list-group :value="false">
+                                    <template v-slot:activator>
+                                        <v-list-item-title>Định Nghĩa Kí Hiệu</v-list-item-title>
+                                    </template>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-khu-vuc" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Khu Vực</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-hien-trang-vuon-cay" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Hiện Trạng Vườn Cây</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-muc-dich-su-dung-dat" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Mục Đích Sử Dụng
+                                            Đất</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item :key="1" link href="/#/home/danh-sach-phan-loai" class="pl-10">
+                                        <v-list-item-title style="text-align: left;">Phân Loại</v-list-item-title>
                                     </v-list-item>
                                 </v-list-group>
                             </v-list>
@@ -143,7 +157,7 @@ export default {
                     console.log(result);
                 })
         },
-        changeTittle(e){
+        changeTittle(e) {
             this.title = e;
         },
         validate() {
@@ -153,7 +167,6 @@ export default {
 }
 </script>
 <style>
- .theme--dark.v-list{
+.theme--dark.v-list {
     background-color: transparent !important;
-}
-</style>
+}</style>

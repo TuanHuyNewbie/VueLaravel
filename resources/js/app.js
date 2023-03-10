@@ -17,6 +17,13 @@ import IndexComponent from './components/IndexComponent';
 import NguoiDungComponent from './components/NguoiDungComponent/TaoNguoiDungComponent';
 import DanhSachComponent from './components/NguoiDungComponent/DanhSachComponent';
 import updateNguoiDungComponent from './components/NguoiDungComponent/UpdateNguoiDungComponent';
+import DanhSachCongTyComponent from './components/CongTyComponent/DanhSachCongTyComponent';
+import DanhSachNongTruongComponent from './components/NongTruongComponent/DanhSachNongTruongComponent';
+import DanhSachLoCanhTacComponent from './components/LoCanhTacComponent/DanhSachLoCanhTacComponent';
+import DanhSachKhuVucComponent from './components/KhuVucComponent/DanhSachKhuVucComponent';
+import DanhSachHienTrangVuonCayComponent from './components/HienTrangVuonCayComponent/DanhSachHienTrangVuonCayComponent';
+import DanhSachMucDichSuDungDatComponent from './components/MucDichSuDungDatComponent/DanhSachMucDichSuDungDatComponent';
+import DanhSachPhanLoaiComponent from './components/PhanLoaiComponent/DanhSachPhanLoaiComponent';
 // import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -98,7 +105,7 @@ const routes = [
                 name: "Danh Sach Nguoi Dung",
                 component: DanhSachComponent,
                 meta:{
-                    title: 'Danh sách người dùng'
+                    title: 'Quản Lí Người Dùng / Danh sách người dùng'
                 }
             },
             {
@@ -106,7 +113,7 @@ const routes = [
                 name: "Nguoi Dung",
                 component: NguoiDungComponent,
                 meta:{
-                    title: 'Thêm Người Dùng Mới'
+                    title: 'Quản Lí Người Dùng / Thêm Người Dùng Mới'
                 }
             },
             {
@@ -114,9 +121,74 @@ const routes = [
                 name: "Cap Nhat Nguoi Dung",
                 component: updateNguoiDungComponent,
                 meta:{
-                    title: 'Cập nhật người dùng'
+                    title: 'Quản Lí Người Dùng / Cập nhật người dùng'
                 }
             },
+            {
+                path: "danh-sach-cong-ty",
+                name: "Danh Sach Cong Ty",
+                component: DanhSachCongTyComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Công Ty',
+                    nameID: 'Danh Sách Công Ty'
+                }
+            },
+            {
+                path: "danh-sach-nong-truong",
+                name: "Danh Sach Nong Truong",
+                component: DanhSachNongTruongComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Nông Trường',
+                    nameID: 'Danh Sách Nông Trường'
+                }
+            },
+            {
+                path: "danh-sach-lo-canh-tac",
+                name: "Danh Sach Lo Canh Tac",
+                component: DanhSachLoCanhTacComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
+                    nameID: 'Danh Sách Lô Canh Tác'
+                }
+            },
+            {
+                path: "danh-sach-khu-vuc",
+                name: "Danh Sach Khu Vuc",
+                component: DanhSachKhuVucComponent,
+                meta:{
+                    title: 'Định Nghĩa Kí Hiệu / Khu Vực',
+                    nameID: 'Danh Sách Khu Vực'
+                }
+            },
+            {
+                path: "danh-sach-hien-trang-vuon-cay",
+                name: "Danh Sach Hien Trang Vuon Cay",
+                component: DanhSachHienTrangVuonCayComponent,
+                meta:{
+                    title: 'Định Nghĩa Kí Hiệu / Hiện Trạng Vườn Cây',
+                    nameID: 'Danh Sách Hiện Trạng Vườn Cây'
+                }
+            },
+            {
+                path: "danh-sach-muc-dich-su-dung-dat",
+                name: "Danh Sach Muc Dich Su Dung Dat",
+                component: DanhSachMucDichSuDungDatComponent,
+                meta:{
+                    title: 'Định Nghĩa Kí Hiệu / Mục Đích Sử Dụng Đất',
+                    nameID: 'Danh Sách Mục Đích Sử Dụng Đất'
+                }
+            },
+            {
+                path: "danh-sach-phan-loai",
+                name: "Danh Sach Phan Loai",
+                component: DanhSachPhanLoaiComponent,
+                meta:{
+                    title: 'Định Nghĩa Kí Hiệu / Phân Loại',
+                    nameID: 'Danh Sách Phân Loại'
+                }
+            },
+
+
         ]
     }
     

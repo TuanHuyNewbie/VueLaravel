@@ -8,14 +8,14 @@
             <div class="row justify-content-center" style="padding-top: -200px;">
                 <v-card dark class="pa-10" style="background-color: rgb(0,0,0,0.7)" width="600">
                     <v-card-title class="white--text">Đăng Nhập</v-card-title>
-                    <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-form  @submit.prevent="login()" v-model="valid">
                         <v-text-field v-model="username" :counter="20" :rules="usernameRules" label="Tên Đăng Nhập"
                             required></v-text-field>
                         <v-text-field v-model="password" :rules="passwordRules" label="Mật Khẩu" type="password"
                             required></v-text-field>
                         <v-checkbox v-model="checkbox" :rules="[v => !!v || 'You must agree to continue!']"
                             label="Ghi Nhớ Tài Khoản?" required></v-checkbox>
-                        <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
+                        <v-btn type="sunmit" :disabled="!valid" color="success" class="mr-4" @click="validate">
                             Đăng Nhập
                         </v-btn>
                         <v-btn color="error" class="mr-4" @click="reset">
@@ -27,11 +27,8 @@
         </div>
     </v-main>
 </template>
-
 <script>
 export default ({
-    // el: '#app',
-    // vuetify: new Vuetify(),
     data: () => ({
         valid: true,
         username: '',
@@ -42,13 +39,25 @@ export default ({
         password: '',
         passwordRules: [
             v => !!v || 'Mật Khẩu Trống',
-            v => (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]^/.test(v)) || 'One capital latter, Special charater, Number'
+            // v => !(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]^/.test(v)) || 'One capital latter, Special charater, Number'
             // v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
         ],
         checkbox: false,
     }),
 
     methods: {
+        login(){
+            let formData = new FormData();
+            formData.append('username', this.username);
+            formData.append('password', this.password);
+            this.axios.post('/api/login', formData)
+                .then((response) => {
+                    console.log(response.data)
+                // if(response.data.status == 200){
+                //     this.$router.push({name: 'home'})
+                // } else console.log("error")
+            })
+        },
         validate() {
             this.$refs.form.validate()
         },

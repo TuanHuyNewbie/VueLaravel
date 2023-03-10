@@ -1,140 +1,201 @@
 <template>
-    <div style="padding: 20px;">
+    <div style="height: 100%; width: 100%; padding: 20px;">
         <v-card elevation="7">
-            <v-card-text style="display: block; width: 100%; margin: 0; padding: 0;">
-                <v-form @submit.prevent="created()" v-model="valid">
-                    <div style="height: 69vh;">
-                        <v-row style="margin: 0; padding: 0; width: 100%;" justify="space-around">
-                            <v-col>
-                                <!-- <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Tên Đăng Nhập:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-text-field type="text" v-model="nguoiDung.ten_dang_nhap" label="Tên Đăng Nhập"
-                                            :rules="rules">
-                                        </v-text-field>
-                                    </v-col>
-                                </v-row> -->
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Mật Khẩu:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-text-field type="password" v-model="nguoiDung.mat_khau" label="Mật Khẩu"
-                                            :rules="rules">
-                                        </v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row class="pt-12" justify="space-around">
-                                    <v-avatar size="190">
-                                        <img v-if="url" :src="url">
-                                    </v-avatar>
-                                </v-row>
-                                <v-row class="pt-8">
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Hình Ảnh:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-file-input :rules="rules" label="File input" filled prepend-icon="mdi-camera"
-                                            v-model="hinh_anh"></v-file-input>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                            <v-col style="max-width: 140px;"></v-col>
-                            <v-col>
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Họ và Tên:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-text-field type="text" v-model="nguoiDung.ho_ten" label="Họ Và Tên"
-                                            :rules="rules">
-                                        </v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Ngày Sinh:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                            :return-value.sync="nguoiDung.ngay_sinh" transition="scale-transition">
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-combobox v-model="nguoiDung.ngay_sinh" chips small-chips
-                                                    label="Ngày Sinh" prepend-icon="mdi-calendar" readonly v-bind="attrs"
-                                                    v-on="on" :rules="rules">
-                                                </v-combobox>
-                                            </template>
-                                            <v-date-picker v-model="dates" color="rgba(255, 0, 0, 0.5)" no-title scrollable>
-                                                <v-spacer></v-spacer>
-                                                <v-btn text color="primary" @click="menu = false">
-                                                    Cancel
-                                                </v-btn>
-                                                <v-btn text color="primary" @click="$refs.menu.save(dates)">
-                                                    OK
-                                                </v-btn>
-                                            </v-date-picker>
-                                        </v-menu>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Giới Tính:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-radio-group v-model="nguoiDung.gioi_tinh">
-                                            <v-radio label="Nam" color="blue" value="Nam" selected></v-radio>
-                                            <v-radio label="Nữ" color="red" value="Nữ"></v-radio>
-                                            <v-radio label="Khác" color="teal" value="Khác"></v-radio>
-                                        </v-radio-group>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Chức Vụ:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-text-field type="text" v-model="nguoiDung.chuc_vu" label="Chức Vụ"
-                                            :rules="rules">
-                                        </v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col align-self="center">
-                                        <p class="text-h5 text--primary">
-                                            Trạng Thái:
-                                        </p>
-                                    </v-col>
-                                    <v-col align-self="center">
-                                        <v-select v-model="ttt" item-text="trang_thai2" :items="trang_thai1"
-                                            label="Trạng Thái" outlined :rules="rules" return-object></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
+            <v-card-text style="margin: 0; padding: 0;">
+                <v-form @submit.prevent="created" v-model="valid">
+                    <div
+                        style="display: flex; justify-content: center; width: 100%; align-content: space-between; flex-wrap: wrap; overflow: scroll;">
+                        <div style="height: calc(100vh - 297px)">
+                            <!-- <v-file-input :rules="rules" label="File input" filled prepend-icon="mdi-camera"
+                                v-model="hinh_anh"> --><!-- </v-file-input> -->
+                                <v-row class="pt-4">
+                                <button type="button" @click="files()">
+                                    <v-avatar reverse size="190">
+                                        <v-img v-if="url" :src="url">
+                                        </v-img>
+                                    </v-avatar> 
+                                    <v-file-input id="fileImage" hide-input style="opacity: 0;" type="file"
+                                    v-model="hinh_anh"></v-file-input>
+                                </button>
+                            </v-row>
+                            <v-row>
+                                <v-text-field outlined type="password" v-model="nguoiDung.mat_khau" label="Mật Khẩu (*)" :rules="rules">
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-text-field outlined type="text" v-model="nguoiDung.ho_ten" label="Họ Và Tên (*)" :rules="rules">
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                                    :return-value.sync="ngay_sinh" transition="scale-transition">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-combobox outlined v-model="nguoiDung.ngay_sinh" chips small-chips label="Ngày Sinh (*)" readonly
+                                            v-bind="attrs" v-on="on" :rules="rules">
+                                        </v-combobox>
+                                    </template>
+                                    <v-date-picker v-model="dates" color="rgba(255, 0, 0, 0.5)" no-title scrollable>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="menu = false">
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                                            OK
+                                        </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="7">
+                                    <p class="text-h6 text--primary">
+                                        Giới Tính:
+                                    </p>
+                                </v-col>
+                                <v-col cols="5">
+                                    <v-radio-group v-model="nguoiDung.gioi_tinh">
+                                        <v-radio label="Nam" color="blue" value="Nam" selected></v-radio>
+                                        <v-radio label="Nữ" color="red" value="Nữ"></v-radio>
+                                        <v-radio label="Khác" color="teal" value="Khác"></v-radio>
+                                    </v-radio-group>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-text-field outlined type="text" v-model="nguoiDung.chuc_vu" label="Chức Vụ" :rules="rules">
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-select v-model="nguoiDung.trang_thai" item-text="trang_thai2" item-value="trang_thai2" :items="trang_thai1"
+                                    label="Trạng Thái" outlined :rules="rules"></v-select>
+                            </v-row>
+                            
+                        </div>
                     </div>
+                    <!-- <v-row style="margin: 0; padding: 0; width: 100%; height: calc(100vh - 357px)" justify="space-around">
+                        <v-col>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Tên Đăng Nhập:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-text-field type="text" v-model="ten_dang_nhap" label="Tên Đăng Nhập" :rules="rules">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Mật Khẩu:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-text-field type="password" v-model="mat_khau" label="Mật Khẩu" :rules="rules">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row class="pt-12" justify="space-around">
+                                <v-avatar size="190">
+                                    <img v-if="url" :src="url">
+                                </v-avatar>
+                            </v-row>
+                            <v-row class="pt-8">
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Hình Ảnh:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-file-input :rules="rules" label="File input" filled prepend-icon="mdi-camera"
+                                        v-model="hinh_anh"></v-file-input>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col style="max-width: 140px;"></v-col>
+                        <v-col>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Họ và Tên:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-text-field type="text" v-model="ho_va_ten" label="Họ Và Tên" :rules="rules">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Ngày Sinh:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                                        :return-value.sync="ngay_sinh" transition="scale-transition">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-combobox v-model="ngay_sinh" chips small-chips label="Ngày Sinh"
+                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"
+                                                :rules="rules">
+                                            </v-combobox>
+                                        </template>
+                                        <v-date-picker v-model="dates" color="rgba(255, 0, 0, 0.5)" no-title scrollable>
+                                            <v-spacer></v-spacer>
+                                            <v-btn text color="primary" @click="menu = false">
+                                                Cancel
+                                            </v-btn>
+                                            <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                                                OK
+                                            </v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Giới Tính:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-radio-group v-model="gioi_tinh">
+                                        <v-radio label="Nam" color="blue" value="Nam" selected></v-radio>
+                                        <v-radio label="Nữ" color="red" value="Nữ"></v-radio>
+                                        <v-radio label="Khác" color="teal" value="Khác"></v-radio>
+                                    </v-radio-group>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Chức Vụ:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-text-field type="text" v-model="chuc_vu" label="Chức Vụ" :rules="rules">
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col align-self="center">
+                                    <p class="text-h5 text--primary">
+                                        Trạng Thái:
+                                    </p>
+                                </v-col>
+                                <v-col align-self="center">
+                                    <v-select v-model="trang_thai" item-text="trang_thai2" :items="trang_thai1"
+                                        label="Trạng Thái" outlined :rules="rules" return-object></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row> -->
                     <div>
-                        <v-footer dark absolute height="80" style="">
+                        <v-footer dark abso style="height: 80px">
                             <v-row align="center" justify="space-around">
                                 <v-btn :disabled="!valid" type="submit" color="teal" @click="validate">
                                     Lưu Lại
                                 </v-btn>
-                                <v-btn color="teal">
+                                <v-btn @click="home()" color="teal">
                                     Quay Về
                                 </v-btn>
                             </v-row>
@@ -163,17 +224,17 @@ export default {
             rules: [
                 v => !!v || 'Không Để Trống Trường Này!',
             ],
-            ttt: null,
+            // ttt: null,
         }
     },
     async created() {
         await this.edit();
         // this.url = `../../../public/img/${this.nguoiDung.hinh_anh}`
-        if (this.nguoiDung.trang_thai === 'Hoạt Động') {
-            this.ttt = '1';
-        } else {
-            this.ttt = '2';
-        }
+        // if (this.nguoiDung.trang_thai === 'Hoạt Động') {
+        //     this.ttt = '1';
+        // } else {    
+        //     this.ttt = '2';
+        // }
     },
     watch: {
         hinh_anh(e) {
@@ -199,15 +260,21 @@ export default {
             formData.append('gioi_tinh', this.nguoiDung.gioi_tinh);
             formData.append('hinh_anh', this.nguoiDung.hinh_anh);
             formData.append('chuc_vu', this.nguoiDung.chuc_vu);
-            formData.append('trang_thai', String(this.ttt.trang_thai2));
+            formData.append('trang_thai', String(this.nguoiDung.trang_thai));
             await this.axios.post(`/api/update-nguoi-dung/${this.nguoiDung.id_nguoi_dung}`, formData)
                 .then((result) => {
-                    console.log(result);
+                    this.$router.push({ name: 'Danh Sach Nguoi Dung' });
                 })
+        },
+        files(){
+            document.getElementById('fileImage').click();
         },
         validate() {
             this.$refs.form.validate()
         },
+        home(){
+            this.$router.push({ name: 'Danh Sach Nguoi Dung' });
+        }
     }
 }
 </script>

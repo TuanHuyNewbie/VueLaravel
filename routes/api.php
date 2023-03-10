@@ -117,3 +117,10 @@ Route::get('/get-one-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@getOneNgu
 Route::post('/update-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@updateNguoiDung');
 Route::delete('/delete-nguoi-dung/{id_nguoidung}', 'NguoiDungController@deleteNguoiDung');
 Route::get('/search-nguoi-dung', 'NguoiDungController@searchNguoiDung');
+
+
+/*-------------------------------------------
+___________________User Login________________
+---------------------------------------------*/
+
+Route::post('/login', 'UserLoginController@login');
