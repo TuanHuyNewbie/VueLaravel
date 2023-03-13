@@ -7,7 +7,7 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn style="background-color: green;" @click="addKhuVuc()"><b>+ Thêm Mới</b></v-btn>
                         <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
@@ -31,8 +31,8 @@
                     <v-btn @click="changeAction(item.id_khuvuc)"><v-icon>fa fa-list</v-icon></v-btn><br>
                     <div v-show="item.id_khuvuc == idAction && action">
                         <v-btn color="green"><v-icon>fa fa-eye</v-icon></v-btn>
-                        <v-btn color="primary"><v-icon>fa fa-pencil</v-icon></v-btn>
-                        <v-btn color="error" ><v-icon>fa
+                        <v-btn color="primary" @click="editKhuVuc(item.id_khuvuc)"><v-icon>fa fa-pencil</v-icon></v-btn>
+                        <v-btn color="error" @click="deleteKhuVuc(item.id_khuvuc)"><v-icon>fa
                                 fa-times</v-icon></v-btn>
                     </div>
                 </template>
@@ -72,10 +72,34 @@
 
         },
         methods: {
+            getAllKhuVuc(){
+                this.axios.get('/api/get-all-khu-vuc')
+                .then((response) => {
+                    this.desserts = response.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            },
             changeAction(e){
                 this.idAction = e;
                 this.action = !this.action;
-            }
+            },
+            addKhuVuc(){
+                this.$router.push({path: 'them-khu-vuc'});
+            },
+            editKhuVuc(id){
+                this.$router.push({path: `sua-khu-vuc/${id}`});
+            },
+            deleteKhuVuc(id){
+                this.axios.delete(`/api/delete-khu-vuc/${id}`)
+                    .then((response) => {
+                        this.getAllKhuVuc();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            },
         }
 
     }

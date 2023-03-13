@@ -7,7 +7,7 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn style="background-color: green;" @click="addMucDichSuDungDat()"><b>+ Thêm Mới</b></v-btn>
                         <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
@@ -30,9 +30,9 @@
                 <template v-slot:item.action="{ item }">
                     <v-btn @click="changeAction(item.id_muc_dich_su_dung_dat)"><v-icon>fa fa-list</v-icon></v-btn><br>
                     <div v-show="item.id_muc_dich_su_dung_dat == idAction && action">
-                        <v-btn color="green"><v-icon>fa fa-eye</v-icon></v-btn>
-                        <v-btn color="primary"><v-icon>fa fa-pencil</v-icon></v-btn>
-                        <v-btn color="error" ><v-icon>fa
+                        <v-btn color="green" @click="reviewMuctiMucDichSuDungDat(item.id_muc_dich_su_dung_dat)"><v-icon>fa fa-eye</v-icon></v-btn>
+                        <v-btn color="primary" @click="updateMucDichSuDungDat(item.id_muc_dich_su_dung_dat)"><v-icon>fa fa-pencil</v-icon></v-btn>
+                        <v-btn color="error" @click="deleteMucDichSuDungDat(item.id_muc_dich_su_dung_dat)"><v-icon>fa
                                 fa-times</v-icon></v-btn>
                     </div>
                 </template>
@@ -74,10 +74,37 @@
             
         },
         methods: {
+            getAllMDSDD(){
+                this.axios.get('/api/get-all-muc-dich-su-dung-dat')
+                    .then((response) => {
+                        this.desserts = response.data.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            },
             changeAction(e){
                 this.idAction = e;
                 this.action = !this.action;
-            }
+            },
+            reviewMuctiMucDichSuDungDat(id){
+                this.$router.push({path: `xem-muc-dich-su-dung-dat/${id}`});
+            },
+            addMucDichSuDungDat(){
+                this.$router.push({path: 'them-muc-dich-su-dung-dat'});
+            },
+            updateMucDichSuDungDat(id){
+                this.$router.push({path: `sua-muc-dich-su-dung-dat/${id}`});
+            },
+            deleteMucDichSuDungDat(id){
+                this.axios.delete(`/api/delete-muc-dich-su-dung-dat/${id}`)
+                    .then((response) => {
+                        this.getAllMDSDD()
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            },
         }
 
     }

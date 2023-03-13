@@ -13,9 +13,9 @@
                             required></v-text-field>
                         <v-text-field v-model="password" :rules="passwordRules" label="Mật Khẩu" type="password"
                             required></v-text-field>
-                        <v-checkbox v-model="checkbox" :rules="[v => !!v || 'You must agree to continue!']"
-                            label="Ghi Nhớ Tài Khoản?" required></v-checkbox>
-                        <v-btn type="sunmit" :disabled="!valid" color="success" class="mr-4" @click="validate">
+                        <v-checkbox v-model="checkbox"
+                            label="Ghi Nhớ Tài Khoản?"></v-checkbox>
+                        <v-btn type="sunmit" color="success" class="mr-4">
                             Đăng Nhập
                         </v-btn>
                         <v-btn color="error" class="mr-4" @click="reset">
@@ -42,7 +42,7 @@ export default ({
             // v => !(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]^/.test(v)) || 'One capital latter, Special charater, Number'
             // v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
         ],
-        checkbox: false,
+        // checkbox: false,
     }),
 
     methods: {

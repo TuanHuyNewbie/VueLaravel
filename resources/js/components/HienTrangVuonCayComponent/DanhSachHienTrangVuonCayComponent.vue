@@ -7,7 +7,7 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn style="background-color: green;" @click="addHienTrangVuonCay()"><b>+ Thêm Mới</b></v-btn>
                         <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
@@ -30,9 +30,9 @@
                     <template v-slot:item.action="{ item }">
                         <v-btn @click="changeAction(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_hien_trang_vuon_cay == idAction && action">
-                            <v-btn color="green"><v-icon>fa fa-eye</v-icon></v-btn>
-                            <v-btn color="primary"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error"><v-icon>fa
+                            <v-btn color="green" @click="reviewHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-eye</v-icon></v-btn>
+                            <v-btn color="primary" @click="editHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-pencil</v-icon></v-btn>
+                            <v-btn color="error" @click="deleteHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -73,9 +73,36 @@ export default {
 
     },
     methods: {
+        getAllHienTrangVuonCay() {
+            this.axios.get('/api/get-all-hien-trang-vuon-cay')
+                .then((response) => {
+                    this.desserts = response.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
         changeAction(e) {
             this.idAction = e;
             this.action = !this.action;
+        },
+        addHienTrangVuonCay(){
+            this.$router.push({ path: 'them-hien-trang-vuon-cay' });
+        },
+        editHienTrangVuonCay(id){
+            this.$router.push({ path: `sua-hien-trang-vuon-cay/${id}` });
+        },
+        deleteHienTrangVuonCay(id){
+            this.axios.delete(`/api/delete-hien-trang-vuon-cay/${id}`)
+            .then((response) => {
+                this.getAllHienTrangVuonCay();
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        },
+        reviewHienTrangVuonCay(id){
+            this.$router.push({ path: `xem-hien-trang-vuon-cay/${id}` });
         }
     }
 

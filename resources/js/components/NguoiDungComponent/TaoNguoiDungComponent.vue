@@ -15,7 +15,7 @@
                                         </v-img>
                                     </v-avatar> 
                                     <v-file-input id="fileImage" hide-input style="opacity: 0;" type="file"
-                                    v-model="hinh_anh"></v-file-input>
+                                    v-model="hinh_anh" :rules="rules"></v-file-input>
                                 </button>
                             </v-row>
                             <v-row class="pt-4">
@@ -262,6 +262,7 @@ export default {
             formData.append('hinh_anh', this.hinh_anh);
             formData.append('chuc_vu', this.chuc_vu);
             formData.append('trang_thai', this.trang_thai.trang_thai2);
+            console.log(formData);
             await this.axios.post('/api/create-nguoi-dung', formData)
                 .then((result) => {
                     this.$router.push({ path: 'danh-sach-nguoi-dung' });

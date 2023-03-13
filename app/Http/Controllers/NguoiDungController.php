@@ -46,8 +46,9 @@ class NguoiDungController extends Controller
         return response()->json($res);
     }
     public function updateNguoiDung($id_nguoi_dung, Request $request){
+        $password = md5(md5($request->get('mat_khau')));
         $query = 'UPDATE `Nguoi_Dung` SET 
-            `mat_khau` = "'.$request->get('mat_khau').'",
+            `mat_khau` = "'.$password.'",
             `ho_ten` = "'.$request->get('ho_ten').'",
             `ngay_sinh` = "'.$request->get('ngay_sinh').'",
             `gioi_tinh` = "'.$request->get('gioi_tinh').'",

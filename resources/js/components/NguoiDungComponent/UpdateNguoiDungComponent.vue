@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100%; width: 100%; padding: 20px;">
+    <div style="width: 100%; padding: 20px;">
         <v-card elevation="7">
             <v-card-text style="margin: 0; padding: 0;">
                 <v-form @submit.prevent="created" v-model="valid">

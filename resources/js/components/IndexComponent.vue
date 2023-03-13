@@ -4,7 +4,7 @@
             <v-col cols="10" style="padding: 0;">
                 <div style="height: 70px; background-color: black; display: flex;">
                     <img src="https://api.rynan.vn/VDAPES/images/logo.png"
-                        style="margin-left:30px ;width: 240px; align-content: center; padding: 10px;">
+                        style="margin-left:30px ;width: auto; align-content: center; padding: 10px;">
                 </div>
                 <div style="height: 90px; margin: 0; padding: 0; ">
                     <div style="padding: 10px;">
@@ -99,8 +99,8 @@
                             </v-list>
                         </v-card>
                     </template>
-                    <v-footer absolute style="width: 100%;">
-                        <img src="https://api.rynan.vn/VDAPES/images/logo.png" style="width: auto;">
+                    <v-footer absolute>
+                        <img src="https://api.rynan.vn/VDAPES/images/logo.png" style="width: 100%;">
                     </v-footer>
                 </v-navigation-drawer>
             </v-col>

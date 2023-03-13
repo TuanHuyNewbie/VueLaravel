@@ -9,7 +9,7 @@ use DB;
 class UserLoginController extends Controller
 {
     public function login(Request $request){
-        dd($request->get('username'));
+        // dd($request->get('username'));
         $username = $request->get('username');
         $password = $request->get('password');
         

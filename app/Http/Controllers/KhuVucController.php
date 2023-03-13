@@ -8,7 +8,7 @@ use DB;
 class KhuVucController extends Controller
 {
     public function createKhuVuc(Request $request){
-        $query = "INSERT INTO `khuvuc` (`id_khuvuc`,`ten_khu_vuc`,`hidden`) VALUES ('".$request->get('id_khuvuc')."','".$request->get('tenkhuvuc')."','".$request->get('hidden')."')";
+        $query = "INSERT INTO `khuvuc` (`id_khuvuc`,`ten_khu_vuc`,`hidden`) VALUES ('".$request->get('id_khuvuc')."','".$request->get('ten_khu_vuc')."','".$request->get('hidden')."')";
         $res = DB::select($query);
         return response()->json("success");
     }
@@ -20,7 +20,7 @@ class KhuVucController extends Controller
     public function getOneKhuVuc($id_khuvuc){
         $query ='SELECT * FROM `khuvuc` WHERE `id_khuvuc` = '.$id_khuvuc;
         $res = DB::select($query);
-        return response()->json(['data'=>$res]);
+        return response()->json($res, 200);
     }
     public function updateKhuVuc($id_khuvuc, Request $request){
         $query = "UPDATE `khuvuc` SET `ten_khu_vuc` = '".$request->get('ten_khu_vuc')."', `hidden` = '".$request->get('hidden')."' WHERE `id_khuvuc` = ".$id_khuvuc;

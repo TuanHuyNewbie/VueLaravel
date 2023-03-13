@@ -17,10 +17,10 @@ class MucDichSuDungDatController extends Controller
         $res = DB::select($query);
         return response()->json(['data'=>$res]);
     }
-    public function getOneMucDichSuDungDat($id_muc_dich_su_dung_dat){
-        $query ='SELECT * FROM `mucdichsudungdat` WHERE `id_muc_dich_su_dung_dat` = '.$id_muc_dich_su_dung_dat;
+    public function getOneMucDichSuDungDat($id_mucdichsudungdat){
+        $query ='SELECT * FROM `mucdichsudungdat` WHERE `id_muc_dich_su_dung_dat` = '.$id_mucdichsudungdat;
         $res = DB::select($query);
-        return response()->json(['data'=>$res]);
+        return response()->json($res, 200);
     }
     public function updateMucDichSuDungDat($id_muc_dich_su_dung_dat, Request $request){
         $query = "UPDATE `mucdichsudungdat` SET `ky_hieu` = '".$request->get('ky_hieu')."', `hien_trang` = '".$request->get('hien_trang')."', `dien_giai` = '".$request->get('dien_giai')."' WHERE `id_muc_dich_su_dung_dat` = ".$id_muc_dich_su_dung_dat;
