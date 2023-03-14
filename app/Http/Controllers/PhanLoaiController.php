@@ -13,12 +13,23 @@ class PhanLoaiController extends Controller
         return response()->json("success");
     }
     public function getAllPhanLoai(Request $request){
-        $query ='SELECT * FROM `phanloai`';
+        $query ='SELECT phanloai.*, hientrangvuoncay.ky_hieu kh_htvc, mucdichsudungdat.ky_hieu kh_mdsdd 
+                FROM `phanloai`
+                INNER JOIN `hientrangvuoncay`
+                ON phanloai.id_hien_trang_vuon_cay = hientrangvuoncay.id_hien_trang_vuon_cay
+                INNER JOIN `mucdichsudungdat`
+                ON phanloai.id_muc_dich_su_dung_dat = mucdichsudungdat.id_muc_dich_su_dung_dat';
         $res = DB::select($query);
         return response()->json(['data'=>$res]);
     }
     public function getOnePhanLoai($id_phan_loai){
-        $query ='SELECT * FROM `phanloai` WHERE `id_phan_loai` = '.$id_phan_loai;
+        $query ='SELECT phanloai.*, hientrangvuoncay.ky_hieu kh_htvc, mucdichsudungdat.ky_hieu kh_mdsdd 
+        FROM `phanloai`
+        INNER JOIN `hientrangvuoncay`
+        ON phanloai.id_hien_trang_vuon_cay = hientrangvuoncay.id_hien_trang_vuon_cay
+        INNER JOIN `mucdichsudungdat`
+        ON phanloai.id_muc_dich_su_dung_dat = mucdichsudungdat.id_muc_dich_su_dung_dat
+        WHERE `id_phan_loai` = '.$id_phan_loai;
         $res = DB::select($query);
         return response()->json(['data'=>$res]);
     }

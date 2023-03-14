@@ -7,7 +7,7 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;" @click = "addPhanLoai()"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn style="background-color: green;" @click="addPhanLoai()"><b>+ Thêm Mới</b></v-btn>
                         <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
@@ -30,8 +30,10 @@
                     <template v-slot:item.action="{ item }">
                         <v-btn @click="changeAction(item.id_phan_loai)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_phan_loai == idAction && action">
-                            <v-btn color="green"><v-icon>fa fa-eye</v-icon></v-btn>
-                            <v-btn color="primary"><v-icon>fa fa-pencil</v-icon></v-btn>
+                            <v-btn color="green" @click="reviewPhanLoai(item.id_phan_loai)"><v-icon>fa
+                                    fa-eye</v-icon></v-btn>
+                            <v-btn color="primary" @click="editPhanLoai(item.id_phan_loai)"><v-icon>fa
+                                    fa-pencil</v-icon></v-btn>
                             <v-btn color="error"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
@@ -56,8 +58,8 @@ export default {
             ],
             header: [
                 { text: 'ID Phân Loại', value: 'id_phan_loai' },
-                { text: 'Hiện Trạng Vườn Cây (Kí Hiệu)', value: 'kh_hien_trang_vuon_cay' },
-                { text: 'Mục Đích Sử Dụng Đất (Kí Hiệu)', value: 'kh_muc_dich_su_dung_dat' },
+                { text: 'Hiện Trạng Vườn Cây (Kí Hiệu)', value: 'kh_htvc' },
+                { text: 'Mục Đích Sử Dụng Đất (Kí Hiệu)', value: 'kh_mdsdd' },
                 { text: 'Ký Hiệu Phân Loại', value: 'ky_hieu_phan_loai' },
                 { text: 'Diễn Giải', value: 'dien_giai' },
                 { text: 'Hành Động', value: 'action' }
@@ -65,39 +67,9 @@ export default {
         }
     },
     created() {
-        this.axios.get('/api/get-all-hien-trang-vuon-cay')
-            .then((response) => {
-                this.htvc = response.data.data;
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        this.axios.get('/api/get-all-muc-dich-su-dung-dat')
-            .then((response) => {
-                this.mdsdd = response.data.data;
-            })
-            .catch((error) => {
-                console.log(error);
-            })
         this.axios.get('/api/get-all-phan-loai')
             .then((response) => {
                 this.desserts = response.data.data;
-                Promise.all(
-                    this.desserts.forEach(async (dessert, index) => {
-                        await this.mdsdd.forEach((element) => {
-                            if (dessert.id_muc_dich_su_dung_dat == element.id_muc_dich_su_dung_dat) {
-                                this.desserts[index].kh_muc_dich_su_dung_dat = element.ky_hieu;
-                            }
-                        });
-                    }))
-                Promise.all(
-                    this.desserts.forEach(async (dessert, index) => {
-                        await this.htvc.forEach((element) => {
-                            if (dessert.id_hien_trang_vuon_cay == element.id_hien_trang_vuon_cay) {
-                                this.desserts[index].kh_hien_trang_vuon_cay = element.ky_hieu;
-                            }
-                        });
-                    }))
             })
             .catch((error) => {
                 console.log(error);
@@ -107,6 +79,15 @@ export default {
 
     },
     methods: {
+        async getAllPhanLoai() {
+            this.axios.get('/api/get-all-phan-loai')
+            .then((response) => {
+                this.desserts = response.data.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        },
         changeAction(e) {
             this.idAction = e;
             this.action = !this.action;
@@ -119,6 +100,15 @@ export default {
         },
         reviewPhanLoai(id) {
             this.$router.push({ path: `xem-phan-loai/${id}` });
+        },
+        deletePhanLoai(id) {
+            this.axios.delete(`/api/delete-phan-loai/${id}`)
+                .then((response) => {
+                    this.getAllPhanLoai();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
 
     }

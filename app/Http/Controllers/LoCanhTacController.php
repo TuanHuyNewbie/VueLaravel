@@ -52,14 +52,29 @@ class LoCanhTacController extends Controller
         return response()->json("success");
     }
     public function getAllLoCanhTac(Request $request){
-        $query ='SELECT * FROM `lo_canh_tac`';
+        $query ='SELECT lo_canh_tac.*, nongtruong.ma_nong_truong, hientrangvuoncay.ky_hieu kh_htvc, phanloai.ky_hieu_phan_loai kh_pl
+        FROM `lo_canh_tac`
+        INNER JOIN `nongtruong` 
+        ON lo_canh_tac.id_nong_truong = nongtruong.id_nong_truong
+        INNER JOIN `hientrangvuoncay`
+        ON lo_canh_tac.id_hien_trang_vuon_cay = hientrangvuoncay.id_hien_trang_vuon_cay
+        INNER JOIN `phanloai`
+        ON lo_canh_tac.id_phan_loai = phanloai.id_phan_loai';
         $res = DB::select($query);
         return response()->json(['data'=>$res]);
     }
     public function getOneLoCanhTac($id_lo_canh_tac){
-        $query ='SELECT * FROM `lo_canh_tac` WHERE `id_lo_canh_tac` = '.$id_lo_canh_tac;
+        $query ='SELECT lo_canh_tac.*, nongtruong.ma_nong_truong, hientrangvuoncay.ky_hieu kh_htvc, phanloai.ky_hieu_phan_loai kh_pl
+        FROM `lo_canh_tac`
+        INNER JOIN `nongtruong` 
+        ON lo_canh_tac.id_nong_truong = nongtruong.id_nong_truong
+        INNER JOIN `hientrangvuoncay`
+        ON lo_canh_tac.id_hien_trang_vuon_cay = hientrangvuoncay.id_hien_trang_vuon_cay
+        INNER JOIN `phanloai`
+        ON lo_canh_tac.id_phan_loai = phanloai.id_phan_loai 
+        WHERE id_lo_canh_tac = '.$id_lo_canh_tac;
         $res = DB::select($query);
-        return response()->json(['data'=>$res]);
+        return response()->json($res, 200);
     }
     public function updateLoCanhTac($id_lo_canh_tac, Request $request){
         $query = "UPDATE `lo_canh_tac` SET

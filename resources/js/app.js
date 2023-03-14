@@ -41,6 +41,20 @@ import XemNongTruongComponent from './components/NongTruongComponent/XemNongTruo
 import ThemPhanLoaiComponent from './components/PhanLoaiComponent/ThemPhanLoaiComponent';
 import SuaPhanLoaiComponent from './components/PhanLoaiComponent/SuaPhanLoaiComponent';
 import XemPhanLoaiComponent from './components/PhanLoaiComponent/XemPhanLoaiComponent';
+import ThemLoCanhTacComponent from './components/LoCanhTacComponent/ThemLoCanhTacComponent';
+import SuaLoCanhTacComponent from './components/LoCanhTacComponent/SuaLoCanhTacComponent';
+import XemLoCanhTacComponent from './components/LoCanhTacComponent/XemLoCanhTacComponent';
+
+
+import store from './store/index';
+import { initialize } from "./helpers/general";
+
+initialize(store, router);
+Vue.use(require('@websanova/vue-auth'), {
+    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+    http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
+ });
 // import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -90,7 +104,10 @@ const routes = [
     {
         path: "/login",
         name: "Login",
-        component: LoginComponent
+        component: LoginComponent,
+        meta: {
+            auth: false
+        }
     },
     {
         path: "/index",
@@ -149,15 +166,6 @@ const routes = [
                     title: 'Quản Lí Nông Trường / Công Ty',
                     nameID: 'Danh Sách Công Ty'
                 },
-            },
-            {
-                path: "danh-sach-lo-canh-tac",
-                name: "Danh Sach Lo Canh Tac",
-                component: DanhSachLoCanhTacComponent,
-                meta:{
-                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
-                    nameID: 'Danh Sách Lô Canh Tác'
-                }
             },
             //--------------------Công Ty---------------------
             {   
@@ -372,6 +380,43 @@ const routes = [
                     nameID: 'Xem Phân Loại'
                 }
             },
+            //---------------------Lô Canh Tác----------------------
+            {
+                path: "danh-sach-lo-canh-tac",
+                name: "Danh Sach Lo Canh Tac",
+                component: DanhSachLoCanhTacComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
+                    nameID: 'Danh Sách Lô Canh Tác'
+                }
+            },
+            {
+                path: "them-lo-canh-tac",
+                name: "Them Lo Canh Tac",
+                component: ThemLoCanhTacComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
+                    nameID: 'Thêm Lô Canh Tác'
+                }
+            },
+            {
+                path: "sua-lo-canh-tac/:id_lo_canh_tac",
+                name: "Sua Lo Canh Tac",
+                component: SuaLoCanhTacComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
+                    nameID: 'Sửa Lô Canh Tác'
+                }
+            },
+            {
+                path: "xem-lo-canh-tac/:id_lo_canh_tac",
+                name: "Xem Lo Canh Tac",
+                component: XemLoCanhTacComponent,
+                meta:{
+                    title: 'Quản Lí Nông Trường / Lô Canh Tác',
+                    nameID: 'Xem Lô Canh Tác'
+                }
+            },
         ]
     }
     
@@ -384,6 +429,7 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    store,
     router,
     vuetify: vuetify,
 });

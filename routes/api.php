@@ -90,7 +90,7 @@ ___________________Phan Loai_________________
 Route::post('/create-phan-loai', 'PhanLoaiController@createPhanLoai');
 Route::get('/get-all-phan-loai', 'PhanLoaiController@getAllPhanLoai');
 Route::get('/get-one-phan-loai/{id_phanloai}', 'PhanLoaiController@getOnePhanLoai');
-Route::put('/update-phan-loai/{id_phanloai}', 'PhanLoaiController@updatePhanLoai');
+Route::post('/update-phan-loai/{id_phanloai}', 'PhanLoaiController@updatePhanLoai');
 Route::delete('/delete-phan-loai/{id_phanloai}', 'PhanLoaiController@deletePhanLoai');
 Route::get('/search-phan-loai', 'PhanLoaiController@searchPhanLoai');
 
@@ -101,7 +101,7 @@ ___________________Lo Canh Tac_______________
 Route::post('/create-lo-canh-tac', 'LoCanhTacController@createLoCanhTac');
 Route::get('/get-all-lo-canh-tac', 'LoCanhTacController@getAllLoCanhTac');
 Route::get('/get-one-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@getOneLoCanhTac');
-Route::put('/update-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@updateLoCanhTac');
+Route::post('/update-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@updateLoCanhTac');
 Route::delete('/delete-lo-canh-tac/{id_locanhtac}', 'LoCanhTacController@deleteLoCanhTac');
 Route::get('/search-lo-canh-tac', 'LoCanhTacController@searchLoCanhTac');
 
@@ -123,4 +123,19 @@ Route::get('/search-nguoi-dung', 'NguoiDungController@searchNguoiDung');
 ___________________User Login________________
 ---------------------------------------------*/
 
-Route::post('/login', 'UserLoginController@login');
+// Route::post('/login', 'UserLoginController@login');
+Route::post('/login', 'AuthController@login');
+
+Route::group([
+
+    'middleware' => 'api',
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'auth'
+
+], function ($router) {
+    
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});

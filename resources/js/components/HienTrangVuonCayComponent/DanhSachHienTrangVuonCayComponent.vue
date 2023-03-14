@@ -8,7 +8,7 @@
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
                         <v-btn style="background-color: green;" @click="addHienTrangVuonCay()"><b>+ Thêm Mới</b></v-btn>
-                        <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
+                        <v-btn style="background-color: green;" @click="exportToExCel()"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
                 </v-row>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { json2excel, excel2json } from 'js2excel';
+
 export default {
     data() {
         return {
@@ -103,7 +105,25 @@ export default {
         },
         reviewHienTrangVuonCay(id){
             this.$router.push({ path: `xem-hien-trang-vuon-cay/${id}` });
-        }
+        },
+        exportToExCel() {
+            let data = []
+            this.desserts.forEach((dessert) => {
+                let obj = {
+                    "ID Hiện Trạng Vườn Cây": dessert.id_hien_trang_vuon_cay,
+                    "Ký Hiệu": dessert.ky_hieu,
+                    "Diễn Giải": dessert.dien_giai,
+                }
+                data.push(obj);
+            });
+            try {
+                json2excel({
+                    data
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        },
     }
 
 }
