@@ -13,9 +13,9 @@
                                     <v-avatar reverse size="190">
                                         <v-img v-if="url" :src="url">
                                         </v-img>
-                                    </v-avatar> 
+                                    </v-avatar>
                                     <v-file-input id="fileImage" hide-input style="opacity: 0;" type="file"
-                                    v-model="hinh_anh" :rules="rules"></v-file-input>
+                                        v-model="hinh_anh" :rules="rules"></v-file-input>
                                 </button>
                             </v-row>
                             <v-row class="pt-4">
@@ -34,20 +34,14 @@
                             </v-row>
                             <v-row>
                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                    :return-value.sync="ngay_sinh" transition="scale-transition">
+                                 transition="scale-transition">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-combobox outlined v-model="ngay_sinh" chips small-chips label="Ngày Sinh (*)"
+                                        <v-text-field outlined v-model="ngay_sinh" chips small-chips label="Ngày Sinh (*)"
                                             readonly v-bind="attrs" v-on="on" :rules="rules">
-                                        </v-combobox>
+                                        </v-text-field>
                                     </template>
-                                    <v-date-picker v-model="dates" color="rgba(255, 0, 0, 0.5)" no-title scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu = false">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn text color="primary" @click="$refs.menu.save(dates)">
-                                            OK
-                                        </v-btn>
+                                    <v-date-picker v-model="date" color="rgba(255, 0, 0, 0.5)" no-title scrollable
+                                        @input="menu = false">
                                     </v-date-picker>
                                 </v-menu>
                             </v-row>
@@ -216,7 +210,7 @@
 export default {
     data() {
         return {
-            dates: new Date().toISOString(),
+            date: new Date().toISOString().substr(0, 10),
             ngay_sinh: '',
             menu: false,
             valid: true,
@@ -245,6 +239,9 @@ export default {
             if (this.hinh_anh == null) {
                 this.url = 'https://icons.veryicon.com/png/o/internet--web/iview-3-x-icons/md-contact.png'
             } else { this.url = URL.createObjectURL(file); }
+        },
+        date(e) {
+            this.ngay_sinh = this.formatDate(e);
         }
     },
     methods: {
@@ -253,7 +250,7 @@ export default {
             if (this.hinh_anh == null) {
                 this.hinh_anh = 'https://icons.veryicon.com/png/o/internet--web/iview-3-x-icons/md-contact.png'
             }
-
+            console.log(this.ten_dang_nhap, this.mat_khau, this.ho_va_ten, this.ngay_sinh, this.gioi_tinh, this.hinh_anh, this.chuc_vu, this.trang_thai.trang_thai2)
             formData.append('ten_dang_nhap', this.ten_dang_nhap);
             formData.append('mat_khau', this.mat_khau);
             formData.append('ho_ten', this.ho_va_ten);
@@ -262,20 +259,24 @@ export default {
             formData.append('hinh_anh', this.hinh_anh);
             formData.append('chuc_vu', this.chuc_vu);
             formData.append('trang_thai', this.trang_thai.trang_thai2);
-            console.log(formData);
             await this.axios.post('/api/create-nguoi-dung', formData)
                 .then((result) => {
                     this.$router.push({ path: 'danh-sach-nguoi-dung' });
                 })
         },
-        files(){
+        files() {
             document.getElementById('fileImage').click();
         },
         validate() {
             this.$refs.form.validate()
         },
-        home(){
+        home() {
             this.$router.push({ name: 'Danh Sach Nguoi Dung' });
+        },
+        formatDate(date) {
+            if (!date) return null
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
         }
     }
 }

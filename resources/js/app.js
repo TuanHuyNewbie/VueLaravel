@@ -44,19 +44,13 @@ import XemPhanLoaiComponent from './components/PhanLoaiComponent/XemPhanLoaiComp
 import ThemLoCanhTacComponent from './components/LoCanhTacComponent/ThemLoCanhTacComponent';
 import SuaLoCanhTacComponent from './components/LoCanhTacComponent/SuaLoCanhTacComponent';
 import XemLoCanhTacComponent from './components/LoCanhTacComponent/XemLoCanhTacComponent';
-
-
-import store from './store/index';
-import { initialize } from "./helpers/general";
-
-initialize(store, router);
-Vue.use(require('@websanova/vue-auth'), {
-    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
-    http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
-    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
- });
+import Cookies from 'js-cookie';
+// import VueSimpleAlert from "vue-simple-alert";
 // import vuetify from './plugins/vuetify'
+
+Vue.use(Cookies)
 Vue.use(VueAxios, axios);
+// Vue.use(VueSimpleAlert);
 Vue.use(VueRouter);
 Vue.component('font-awesome-icon', FontAwesomeIcon) // Register component globally
 library.add(fas)
@@ -105,9 +99,6 @@ const routes = [
         path: "/login",
         name: "Login",
         component: LoginComponent,
-        meta: {
-            auth: false
-        }
     },
     {
         path: "/index",
@@ -429,7 +420,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    store,
     router,
     vuetify: vuetify,
 });

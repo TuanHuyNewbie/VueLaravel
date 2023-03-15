@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 /*-------------------------------------------
 ___________________User______________________
 ---------------------------------------------*/
+Route::group(['middleware' => 'jwt.auth'], function () {
+    // Các tuyến đường API ở đây
 
 Route::post('/create-user', 'UserController@createUser');
 Route::get('/get-all-user', 'UserController@getAllUser');
@@ -118,24 +120,32 @@ Route::post('/update-nguoi-dung/{id_nguoi_dung}', 'NguoiDungController@updateNgu
 Route::delete('/delete-nguoi-dung/{id_nguoidung}', 'NguoiDungController@deleteNguoiDung');
 Route::get('/search-nguoi-dung', 'NguoiDungController@searchNguoiDung');
 
-
+});
 /*-------------------------------------------
 ___________________User Login________________
 ---------------------------------------------*/
 
 // Route::post('/login', 'UserLoginController@login');
 Route::post('/login', 'AuthController@login');
+Route::get('/me', 'AuthController@me');
 
-Route::group([
 
-    'middleware' => 'api',
-    'namespace' => 'App\Http\Controllers',
-    'prefix' => 'auth'
-
-], function ($router) {
-    
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
+// Route::post('/signup', 'AuthController@register');
+// Route::group([
+
+//     'middleware' => 'api',
+//     'namespace' => 'App\Http\Controllers',
+//     'prefix' => 'auth'
+
+// ], function ($router) {
+    
+//     Route::post('logout', 'AuthController@logout');
+//     Route::post('refresh', 'AuthController@refresh');
+//     Route::post('me', 'AuthController@me');
+
+// });

@@ -14,6 +14,7 @@ class CongTyController extends Controller
         return response()->json("success");
     }
     public function getAllCongTy(Request $request){
+       
         $query ='SELECT * FROM `congty`';
         $res = DB::select($query);
         return response()->json(['data'=>$res]);

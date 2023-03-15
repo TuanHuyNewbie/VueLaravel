@@ -9,7 +9,9 @@
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
                         <v-btn style="background-color: green;" @click="addCompany()"><b>+ Thêm Mới</b></v-btn>
                         <v-btn style="background-color: green;" @click="exportToExCel()"><b>Xuất File Excel</b></v-btn>
-                        <v-btn type="file" multiple="false" id="sheets" accept="application/x-iwork-keynote-sffnumbers,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @change="onchange()" />
+                        <v-btn type="file" multiple="false" id="sheets"
+                            accept="application/x-iwork-keynote-sffnumbers,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            @change="onchange()" />
                     </v-col>
                 </v-row>
             </div>

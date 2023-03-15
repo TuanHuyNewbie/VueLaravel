@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -42,12 +42,22 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            // 'driver' => 'token',
+            // 'provider' => 'users',
+            // 'hash' => false,
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
     ],
 
+
+    'jwt' => [
+        'secret' => env('JWT_SECRET'),
+        'lifetime' => env('JWT_TTL', 60),
+        'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+        'algo' => env('JWT_ALGO', 'HS256'),
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers

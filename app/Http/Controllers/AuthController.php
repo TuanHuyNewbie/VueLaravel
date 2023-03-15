@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','me']]);
     }
 
     /**
@@ -30,9 +31,10 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $token = auth()->attempt($credentials);
+            $secret_key = "yp0Ecasl7s2SxGOZqlerr6mQxXWzxntqs2USnWKqyOboMgx9XFshwj8a5laCGl0g";
+            $decoded = JWT::decode($token, $secret_key, array('HS256'));
             return response()->json(['token' => $token]);
         }
-        dd(Auth::attemp($credentials));
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
@@ -42,7 +44,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
-    {
+    {       
         return response()->json($this->guard()->user());
     }
 
@@ -93,4 +95,22 @@ class AuthController extends Controller
     {
         return Auth::guard();
     }
+
+    public function register(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|max:255',
+        'email' => 'required|email|unique:users|max:255',
+        'password' => 'required|min:6|max:255',
+        'role' => 'required|in:admin,user'
+    ]);
+
+    $user = new User;
+    $user->name = $validatedData['name'];
+    $user->email = $validatedData['email'];
+    $user->password = Hash::make($validatedData['password']);
+    $user->save();
+
+    return response()->json(['message' => 'Registration successful'], 201);
+}
 }

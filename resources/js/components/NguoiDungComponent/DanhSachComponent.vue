@@ -8,16 +8,22 @@
                         hide-details></v-text-field>
                 </v-card-title>
                 <v-data-table :headers="headers" :items="desserts" :items-per-page="5" :search="search" class="elevation-5">
+                    <template v-slot:item.ngay_sinh="{ item }">
+
+                        {{ item.ngay_sinh }}
+
+                    </template>
                     <template v-slot:item.hinh_anh="{ item }">
                         <v-avatar size="50" tile>
-                            <v-img style="width: 100px; height: 100px;" :src="'/img/'+item.hinh_anh"/>
+                            <v-img style="width: 100px; height: 100px;" :src="'/img/' + item.hinh_anh" />
                         </v-avatar>
                     </template>
                     <template v-slot:item.id_nguoi_dung="{ item }">
                         <v-btn @click="changeAction(item.id_nguoi_dung)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_nguoi_dung === idAction && action">
                             <v-btn color="primary" @click="update(item.id_nguoi_dung)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error" @click="deleteNguoiDung(item.id_nguoi_dung)"><v-icon>fa fa-times</v-icon></v-btn>
+                            <v-btn color="error" @click="deleteNguoiDung(item.id_nguoi_dung)"><v-icon>fa
+                                    fa-times</v-icon></v-btn>
                         </div>
                     </template>
                 </v-data-table>
@@ -29,7 +35,7 @@
 export default {
     data() {
         return {
-            idAction:'',
+            idAction: '',
             action: false,
             search: '',
             headers: [
@@ -49,16 +55,18 @@ export default {
 
     },
     methods: {
-        checkId(e){
+        checkId(e) {
             console.log(e);
         },
         async getAllUser() {
             await this.axios.get('/api/get-all-nguoi-dung')
                 .then((response) => {
                     this.desserts = response.data.data;
-
-                    this.desserts.forEach(function (e, i) {
-                        this.desserts[i].showMenu = false;
+                    this.desserts.forEach((e, index) => {
+                        let ngaySinh = e.ngay_sinh;
+                        console.log(ngaySinh);
+                        this.desserts[index].ngay_sinh = this.formatDate(ngaySinh);
+                        this.desserts[index].showMenu = false;
                     })
                 })
                 .catch(function (error) {
@@ -73,7 +81,7 @@ export default {
         //         }
         //     })
         // },
-        changeAction(e){
+        changeAction(e) {
             this.idAction = e;
             this.action = !this.action;
         },
@@ -84,17 +92,22 @@ export default {
         },
         update(id) {
             // console.log(id);
-            this.$router.push({ path: `cap-nhat-nguoi-dung/${id}`, params:{ id_nguoi_dung: id } });
+            this.$router.push({ path: `cap-nhat-nguoi-dung/${id}`, params: { id_nguoi_dung: id } });
         },
-        async deleteNguoiDung(id){
+        async deleteNguoiDung(id) {
             await this.axios.delete(`/api/delete-nguoi-dung/${id}`)
                 .then((reponse) => {
                     this.getAllUser();
                 });
+        },
+        formatDate(date) {
+            if (!date) return null
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
         }
     },
     async created() {
         await this.getAllUser();
-    }
+    },
 }
 </script>

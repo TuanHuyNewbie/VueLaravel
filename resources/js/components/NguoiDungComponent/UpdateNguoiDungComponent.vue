@@ -8,40 +8,36 @@
                         <div style="height: calc(100vh - 297px)">
                             <!-- <v-file-input :rules="rules" label="File input" filled prepend-icon="mdi-camera"
                                 v-model="hinh_anh"> --><!-- </v-file-input> -->
-                                <v-row class="pt-4">
+                            <v-row class="pt-4">
                                 <button type="button" @click="files()">
                                     <v-avatar reverse size="190">
                                         <v-img v-if="url" :src="url">
                                         </v-img>
-                                    </v-avatar> 
+                                    </v-avatar>
                                     <v-file-input id="fileImage" hide-input style="opacity: 0;" type="file"
-                                    v-model="hinh_anh"></v-file-input>
+                                        v-model="hinh_anh"></v-file-input>
                                 </button>
                             </v-row>
                             <v-row>
-                                <v-text-field outlined type="password" v-model="nguoiDung.mat_khau" label="Mật Khẩu (*)" :rules="rules">
+                                <v-text-field outlined type="password" v-model="nguoiDung.mat_khau" label="Mật Khẩu (*)"
+                                    :rules="rules">
                                 </v-text-field>
                             </v-row>
                             <v-row>
-                                <v-text-field outlined type="text" v-model="nguoiDung.ho_ten" label="Họ Và Tên (*)" :rules="rules">
+                                <v-text-field outlined type="text" v-model="nguoiDung.ho_ten" label="Họ Và Tên (*)"
+                                    :rules="rules">
                                 </v-text-field>
                             </v-row>
                             <v-row>
                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                    :return-value.sync="ngay_sinh" transition="scale-transition">
+                                 transition="scale-transition">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-combobox outlined v-model="nguoiDung.ngay_sinh" chips small-chips label="Ngày Sinh (*)" readonly
-                                            v-bind="attrs" v-on="on" :rules="rules">
-                                        </v-combobox>
+                                        <v-text-field outlined v-model="nguoiDung.ngay_sinh" chips small-chips label="Ngày Sinh (*)"
+                                            readonly v-bind="attrs" v-on="on" :rules="rules">
+                                        </v-text-field>
                                     </template>
-                                    <v-date-picker v-model="dates" color="rgba(255, 0, 0, 0.5)" no-title scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu = false">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn text color="primary" @click="$refs.menu.save(dates)">
-                                            OK
-                                        </v-btn>
+                                    <v-date-picker :max="maxDate" v-model="date" color="rgba(255, 0, 0, 0.5)" no-title scrollable
+                                        @input="menu = false">
                                     </v-date-picker>
                                 </v-menu>
                             </v-row>
@@ -60,14 +56,15 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-text-field outlined type="text" v-model="nguoiDung.chuc_vu" label="Chức Vụ" :rules="rules">
+                                <v-text-field outlined type="text" v-model="nguoiDung.chuc_vu" label="Chức Vụ"
+                                    :rules="rules">
                                 </v-text-field>
                             </v-row>
                             <v-row>
-                                <v-select v-model="nguoiDung.trang_thai" item-text="trang_thai2" item-value="trang_thai2" :items="trang_thai1"
-                                    label="Trạng Thái" outlined :rules="rules"></v-select>
+                                <v-select v-model="nguoiDung.trang_thai" item-text="trang_thai2" item-value="trang_thai2"
+                                    :items="trang_thai1" label="Trạng Thái" outlined :rules="rules"></v-select>
                             </v-row>
-                            
+
                         </div>
                     </div>
                     <!-- <v-row style="margin: 0; padding: 0; width: 100%; height: calc(100vh - 357px)" justify="space-around">
@@ -210,7 +207,8 @@
 export default {
     data() {
         return {
-            dates: new Date().toISOString().substr(0, 10),
+            date: new Date().toISOString().substr(0, 10),
+            maxDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
             ngay_sinh: '',
             menu: false,
             nguoiDung: {},
@@ -249,6 +247,7 @@ export default {
             await this.axios.get(`/api/get-one-nguoi-dung/${this.$route.params.id_nguoi_dung}`)
                 .then((result) => {
                     this.nguoiDung = result.data[0];
+                    this.nguoiDung.ngay_sinh = this.formatDate(this.nguoiDung.ngay_sinh);
                 })
         },
         async created() {
@@ -266,14 +265,19 @@ export default {
                     this.$router.push({ name: 'Danh Sach Nguoi Dung' });
                 })
         },
-        files(){
+        files() {
             document.getElementById('fileImage').click();
         },
         validate() {
             this.$refs.form.validate()
         },
-        home(){
+        home() {
             this.$router.push({ name: 'Danh Sach Nguoi Dung' });
+        },
+        formatDate(date) {
+            if (!date) return null
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
         }
     }
 }
