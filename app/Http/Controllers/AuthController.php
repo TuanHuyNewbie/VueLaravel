@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Hash;
+use DB;
 
 class AuthController extends Controller
 {
@@ -14,10 +16,10 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login','me']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api', ['except' => ['login','me', 'register']]);
+    // }
 
     /**
      * Get a JWT token via given credentials.
@@ -97,20 +99,12 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-{
-    $validatedData = $request->validate([
-        'name' => 'required|max:255',
-        'email' => 'required|email|unique:users|max:255',
-        'password' => 'required|min:6|max:255',
-        'role' => 'required|in:admin,user'
-    ]);
-
-    $user = new User;
-    $user->name = $validatedData['name'];
-    $user->email = $validatedData['email'];
-    $user->password = Hash::make($validatedData['password']);
-    $user->save();
-
-    return response()->json(['message' => 'Registration successful'], 201);
-}
+    {
+        
+        $hashPass = Hash::make($request->get('password'));
+        $sql = "INSERT INTO `users` (`name`,`email`,`password`,`role`) 
+        VALUES ('".$request->get('name')."','".$request->get('email')."','".$hashPass."',0)";
+        $res = DB::select($sql);
+        return response()->json($res, 200);
+    }
 }

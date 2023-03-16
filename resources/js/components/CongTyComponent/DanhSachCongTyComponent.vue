@@ -7,7 +7,8 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;" @click="addCompany()"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn :disabled="disAble" style="background-color: green;" @click="addCompany()"><b>+ Thêm
+                                Mới</b></v-btn>
                         <v-btn style="background-color: green;" @click="exportToExCel()"><b>Xuất File Excel</b></v-btn>
                         <v-btn type="file" multiple="false" id="sheets"
                             accept="application/x-iwork-keynote-sffnumbers,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -31,9 +32,9 @@
                         <v-btn @click="changeAction(item.id_congty)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_congty == idAction && action">
                             <v-btn color="green" @click="previewCompany(item.id_congty)"><v-icon>fa fa-eye</v-icon></v-btn>
-                            <v-btn color="primary" @click="editCompany(item.id_congty)"><v-icon>fa
+                            <v-btn :disabled="disAble" color="primary" @click="editCompany(item.id_congty)"><v-icon>fa
                                     fa-pencil</v-icon></v-btn>
-                            <v-btn color="error" @click="deleteCompany(item.id_congty)"><v-icon>fa
+                            <v-btn :disabled="disAble" color="error" @click="deleteCompany(item.id_congty)"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -49,6 +50,8 @@ import { json2excel, excel2json } from 'js2excel';
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
+            disAble: true,
             khuvuc: [],
             idAction: '',
             action: false,
@@ -66,6 +69,7 @@ export default {
         }
     },
     async created() {
+        this.role != 1 ? this.disAble = true : this.disAble = false;
         await this.axios.get('/api/get-all-khu-vuc')
             .then((response) => {
                 this.khuvuc = response.data.data;
@@ -93,6 +97,7 @@ export default {
     },
     methods: {
         async getAllCongTy() {
+            this.role != 1 ? this.disAble = true : this.disAble = false;
             await this.axios.get('/api/get-all-khu-vuc')
                 .then((response) => {
                     this.khuvuc = response.data.data;

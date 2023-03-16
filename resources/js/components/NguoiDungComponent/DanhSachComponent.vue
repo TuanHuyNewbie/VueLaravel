@@ -21,8 +21,9 @@
                     <template v-slot:item.id_nguoi_dung="{ item }">
                         <v-btn @click="changeAction(item.id_nguoi_dung)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_nguoi_dung === idAction && action">
-                            <v-btn color="primary" @click="update(item.id_nguoi_dung)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error" @click="deleteNguoiDung(item.id_nguoi_dung)"><v-icon>fa
+                            <v-btn :disabled="disAble" color="primary" @click="update(item.id_nguoi_dung)"><v-icon>fa
+                                    fa-pencil</v-icon></v-btn>
+                            <v-btn :disabled="disAble" color="error" @click="deleteNguoiDung(item.id_nguoi_dung)"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -32,9 +33,12 @@
     </div>
 </template>
 <script>
+import { json2excel, excel2json } from 'js2excel';
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
+            disAble: true,
             idAction: '',
             action: false,
             search: '',
@@ -59,6 +63,7 @@ export default {
             console.log(e);
         },
         async getAllUser() {
+            this.role != 1 ? this.disAble = true : this.disAble = false;
             await this.axios.get('/api/get-all-nguoi-dung')
                 .then((response) => {
                     this.desserts = response.data.data;
@@ -107,6 +112,7 @@ export default {
         }
     },
     async created() {
+        this.role != 1 ? this.disAble = true : this.disAble = false;
         await this.getAllUser();
     },
 }

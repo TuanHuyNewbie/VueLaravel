@@ -11,17 +11,19 @@
             </div>
         </div>
         <div style="margin: 0; padding: 20px; width: 100%; height: calc(100vh - 230px); overflow: scroll">
-            <v-card elavation="7" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-                    <div style="display: flex;">
-                        <v-select label="Khu Vực (*)" v-model="congty.id_khuvuc" outlined item-text="ten_khu_vuc" item-value="id_khuvuc" :items="khuvuc"></v-select>
-                        <v-text-field label="Mã Công Ty (*)"  outlined v-model="congty.ma_cong_ty"></v-text-field>
-                        <v-text-field label="Tên Công Ty (*)"  outlined v-model="congty.ten_cong_ty"></v-text-field>
-                        <v-text-field label="Hidden"  outlined v-model="congty.hidden"></v-text-field>
-                    </div>
-                    <v-footer class="pb-10" absolute color="white" style="display: flex; justify-content: space-evenly">
-                        <v-btn x-large color="success" @click="update()">Lưu</v-btn>
-                        <v-btn x-large color="success" @click="home()">Trở Lại</v-btn>
-                    </v-footer>
+            <v-card elavation="7"
+                style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                <div style="display: flex;">
+                    <v-select label="Khu Vực (*)" v-model="congty.id_khuvuc" outlined item-text="ten_khu_vuc"
+                        item-value="id_khuvuc" :items="khuvuc"></v-select>
+                    <v-text-field label="Mã Công Ty (*)" outlined v-model="congty.ma_cong_ty"></v-text-field>
+                    <v-text-field label="Tên Công Ty (*)" outlined v-model="congty.ten_cong_ty"></v-text-field>
+                    <v-text-field label="Hidden" outlined v-model="congty.hidden"></v-text-field>
+                </div>
+                <v-footer class="pb-10" absolute color="white" style="display: flex; justify-content: space-evenly">
+                    <v-btn x-large color="success" @click="update()">Lưu</v-btn>
+                    <v-btn x-large color="success" @click="home()">Trở Lại</v-btn>
+                </v-footer>
             </v-card>
         </div>
 
@@ -32,6 +34,7 @@
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
             khuvuc: [
             ],
             congty: {},
@@ -48,7 +51,6 @@ export default {
             });
         this.axios.get('/api/get-all-khu-vuc')
             .then((response) => {
-                console.log(response.data.data);
                 this.khuvuc = response.data.data;
             })
             .catch((error) => {
@@ -71,7 +73,7 @@ export default {
             formData.append('hidden', this.congty.hidden);
             this.axios.post(`/api/update-cong-ty/${this.$route.params.id_congty}`, formData)
                 .then((response) => {
-                    this.$router.push({path: '/home/danh-sach-cong-ty'});
+                    this.$router.push({ path: '/home/danh-sach-cong-ty' });
                 })
                 .catch((error) => {
                     console.log(error);

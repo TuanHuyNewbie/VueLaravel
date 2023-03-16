@@ -2,13 +2,14 @@
     <div>
         <div style="padding: 0px 10px 10px 10px;">
             <div class="elevation-4" style="height: 60px;">
-                <v-row  style="width: 100%;">
+                <v-row style="width: 100%;">
                     <v-col cols="6" style="display: flex; justify-content: center;">
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;" @click="addLoCanhTac()"><b>+ Thêm Mới</b></v-btn>
-                        <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
+                        <v-btn :disabled="disAble" style="background-color: green;" @click="addLoCanhTac()"><b>+ Thêm
+                                Mới</b></v-btn>
+                        <v-btn @click="exportToExCel()" style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
                 </v-row>
@@ -30,9 +31,12 @@
                     <template v-slot:item.action="{ item }">
                         <v-btn @click="changeAction(item.id_lo_canh_tac)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_lo_canh_tac == idAction && action">
-                            <v-btn color="green" @click="reviewLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa fa-eye</v-icon></v-btn>
-                            <v-btn color="primary" @click="editLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error" @click="deleteLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa
+                            <v-btn color="green" @click="reviewLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa
+                                    fa-eye</v-icon></v-btn>
+                            <v-btn :disabled="disAble" color="primary"
+                                @click="editLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa fa-pencil</v-icon></v-btn>
+                            <v-btn :disabled="disAble" color="error"
+                                @click="deleteLoCanhTac(item.id_lo_canh_tac)"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -42,9 +46,12 @@
     </div>
 </template>
 <script>
+import { json2excel, excel2json } from 'js2excel';
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
+            disAble: true,
             idAction: '',
             action: false,
             search: '',
@@ -76,6 +83,7 @@ export default {
         }
     },
     created() {
+        this.role != 1 ? this.disAble = true : this.disAble = false;
         this.axios.get('/api/get-all-lo-canh-tac')
             .then((response) => {
                 this.desserts = response.data.data;
@@ -88,36 +96,61 @@ export default {
 
     },
     methods: {
-        getAllLoCanhTac(){
+        getAllLoCanhTac() {
+            this.role != 1 ? this.disAble = true : this.disAble = false;
             this.axios.get('/api/get-all-lo-canh-tac')
-            .then((response) => {
-                this.desserts = response.data.data;
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .then((response) => {
+                    this.desserts = response.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
         changeAction(e) {
             this.idAction = e;
             this.action = !this.action;
         },
-        addLoCanhTac(){
+        exportToExCel() {
+            let data = []
+            this.desserts.forEach((dessert) => {
+                let obj = {
+                    "ID Lô Canh Tác": dessert.id_lo_canh_tac,
+                    "Mã lô": dessert.ma_lo,
+                    "Thứ Tự": dessert.thu_tu,
+                    "Năm Trồng": dessert.nam_trong,
+                    "Giá Trịn Phân Loại": dessert.gia_tri_phan_loai,
+                    "Phương Pháp Trồng": dessert.pp_trong,
+                    "Khoảng Cách Trồng": dessert.khoang_cach_trong,
+                    "Mật Độ Thiết Kế": dessert.mat_do_thiet_ke,
+                    "Giống Cây": dessert.giong_cay
+                }
+                data.push(obj);
+            });
+            try {
+                json2excel({
+                    data
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        addLoCanhTac() {
             this.$router.push({ path: 'them-lo-canh-tac' });
         },
-        editLoCanhTac(id){
+        editLoCanhTac(id) {
             this.$router.push({ path: `sua-lo-canh-tac/${id}` });
-        },  
-        reviewLoCanhTac(id){
+        },
+        reviewLoCanhTac(id) {
             this.$router.push({ path: `xem-lo-canh-tac/${id}` });
         },
-        deleteLoCanhTac(id){
+        deleteLoCanhTac(id) {
             this.axios.delete(`/api/delete-lo-canh-tac/${id}`)
-            .then((response) => {
-                this.getAllLoCanhTac();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .then((response) => {
+                    this.getAllLoCanhTac();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         }
     }
 

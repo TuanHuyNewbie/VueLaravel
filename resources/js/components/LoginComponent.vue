@@ -13,7 +13,7 @@
                             required></v-text-field>
                         <v-text-field v-model="password" :rules="passwordRules" label="Mật Khẩu" type="password"
                             required></v-text-field>
-                        <v-checkbox v-model="checkbox" label="Ghi Nhớ Tài Khoản?"></v-checkbox>
+                        <v-checkbox v-model="checkbox" label="Đăng kí tài khoản"></v-checkbox>
                         <v-btn type="sunmit" color="success" class="mr-4">
                             Đăng Nhập
                         </v-btn>
@@ -48,6 +48,7 @@ export default ({
     methods: {
         login() {
             let token = '';
+            let axiosGetName;
             let formData = new FormData();
             formData.append('email', this.username);
             formData.append('password', this.password);
@@ -55,18 +56,21 @@ export default ({
                 .then((response) => {
                     Cookies.set('token', response.data.token, { expires: 1 / 24 });
                     this.$router.push({ path: 'home' })
-                    token = response.data.token
-                })
-                .catch((error) => {
-                    console.log(1);
-                })
-            this.axios.get('/api/me', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-                .then((response) => {
-                    console.log(response.data);
+                    token = response.data.token;
+                    axiosGetName = this.axios.create({
+                        // baseURL: '/api/me',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    axiosGetName.get('/api/me')
+                        .then((response) => {
+                            Cookies.set('role', response.data.role, { expires: 1 / 24 });
+                            Cookies.set('name', response.data.name, { expires: 1 / 24 });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 })
                 .catch((error) => {
                     console.log(error);

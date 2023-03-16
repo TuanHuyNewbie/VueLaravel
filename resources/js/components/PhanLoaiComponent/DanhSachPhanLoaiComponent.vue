@@ -7,8 +7,9 @@
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;" @click="addPhanLoai()"><b>+ Thêm Mới</b></v-btn>
-                        <v-btn style="background-color: green;"><b>Xuất File Excel</b></v-btn>
+                        <v-btn :disabled="disAble" style="background-color: green;" @click="addPhanLoai()"><b>+ Thêm
+                                Mới</b></v-btn>
+                        <v-btn @click="exportToExCel()" style="background-color: green;"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
                 </v-row>
@@ -32,9 +33,9 @@
                         <div v-show="item.id_phan_loai == idAction && action">
                             <v-btn color="green" @click="reviewPhanLoai(item.id_phan_loai)"><v-icon>fa
                                     fa-eye</v-icon></v-btn>
-                            <v-btn color="primary" @click="editPhanLoai(item.id_phan_loai)"><v-icon>fa
+                            <v-btn :disabled="disAble" color="primary" @click="editPhanLoai(item.id_phan_loai)"><v-icon>fa
                                     fa-pencil</v-icon></v-btn>
-                            <v-btn color="error"><v-icon>fa
+                            <v-btn :disabled="disAble" color="error"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -45,9 +46,12 @@
 </template>
 
 <script>
+import { json2excel, excel2json } from 'js2excel';
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
+            disAble: true,
             idAction: '',
             action: false,
             search: '',
@@ -67,6 +71,7 @@ export default {
         }
     },
     created() {
+        this.role != 1 ? this.disAble = true : this.disAble = false;
         this.axios.get('/api/get-all-phan-loai')
             .then((response) => {
                 this.desserts = response.data.data;
@@ -80,13 +85,34 @@ export default {
     },
     methods: {
         async getAllPhanLoai() {
+            this.role != 1 ? this.disAble = true : this.disAble = false;
             this.axios.get('/api/get-all-phan-loai')
-            .then((response) => {
-                this.desserts = response.data.data;
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .then((response) => {
+                    this.desserts = response.data.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+        exportToExCel() {
+            let data = []
+            this.desserts.forEach((dessert) => {
+                let obj = {
+                    "ID Phân Loại": dessert.id_phan_loai,
+                    "Ký Hiệu Hiện Trạng Vườn Cây": dessert.kh_htvc,
+                    "Ký Hiệu Mục Đích Sử Dụng Đất": dessert.kh_mdsdd,
+                    "Ký Hiệu Phân Loại": dessert.ky_hieu_phan_loai,
+                    "Diễn Giải": dessert.dien_giai,
+                }
+                data.push(obj);
+            });
+            try {
+                json2excel({
+                    data
+                });
+            } catch (e) {
+                console.error(e);
+            }
         },
         changeAction(e) {
             this.idAction = e;

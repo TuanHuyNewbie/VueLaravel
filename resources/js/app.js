@@ -45,10 +45,14 @@ import ThemLoCanhTacComponent from './components/LoCanhTacComponent/ThemLoCanhTa
 import SuaLoCanhTacComponent from './components/LoCanhTacComponent/SuaLoCanhTacComponent';
 import XemLoCanhTacComponent from './components/LoCanhTacComponent/XemLoCanhTacComponent';
 import Cookies from 'js-cookie';
+import VueCookies from 'vue-cookies'
+import ErrorComponent from './components/ErrorComponent';
+import SignupComponent from './components/SignupComponent';
 // import VueSimpleAlert from "vue-simple-alert";
 // import vuetify from './plugins/vuetify'
 
-Vue.use(Cookies)
+Vue.use(Cookies);
+Vue.use(VueCookies);
 Vue.use(VueAxios, axios);
 // Vue.use(VueSimpleAlert);
 Vue.use(VueRouter);
@@ -101,6 +105,11 @@ const routes = [
         component: LoginComponent,
     },
     {
+        path:"/signup",
+        name:"Signup",
+        component:SignupComponent
+    },
+    {
         path: "/index",
         name: "Index",
         component: IndexComponent
@@ -121,16 +130,26 @@ const routes = [
         component: updateNguoiDungComponent
     },
     {
+        path: "/error",
+        name: "Error",
+        component: ErrorComponent
+    },
+    {
         path: "/home",
         name: "Home",
         component: IndexComponent,
+        meta:{
+            title: 'Trang Chủ',
+            middleware: 0
+        },
         children: [
             {
                 path: "danh-sach-nguoi-dung",
                 name: "Danh Sach Nguoi Dung",
                 component: DanhSachComponent,
                 meta:{
-                    title: 'Quản Lí Người Dùng / Danh sách người dùng'
+                    title: 'Quản Lí Người Dùng / Danh sách người dùng',
+                    middleware: 0
                 }
             },
             {
@@ -138,7 +157,8 @@ const routes = [
                 name: "Nguoi Dung",
                 component: NguoiDungComponent,
                 meta:{
-                    title: 'Quản Lí Người Dùng / Thêm Người Dùng Mới'
+                    title: 'Quản Lí Người Dùng / Thêm Người Dùng Mới',
+                    middleware: 1
                 }
             },
             {
@@ -146,7 +166,8 @@ const routes = [
                 name: "Cap Nhat Nguoi Dung",
                 component: updateNguoiDungComponent,
                 meta:{
-                    title: 'Quản Lí Người Dùng / Cập nhật người dùng'
+                    title: 'Quản Lí Người Dùng / Cập nhật người dùng',
+                    middleware: 1
                 }
             },
             {
@@ -155,7 +176,8 @@ const routes = [
                 component: DanhSachCongTyComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Công Ty',
-                    nameID: 'Danh Sách Công Ty'
+                    nameID: 'Danh Sách Công Ty',
+                    middleware: 0
                 },
             },
             //--------------------Công Ty---------------------
@@ -165,16 +187,8 @@ const routes = [
                 component: ThemCongTyComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Công Ty',
-                    nameID: 'Thêm Công Ty'
-                }
-            },
-            {   
-                path: "them-cong-ty",
-                name: "Them Cong Ty",
-                component: ThemCongTyComponent,
-                meta:{
-                    title: 'Quản Lí Nông Trường / Công Ty',
-                    nameID: 'Thêm Công Ty'
+                    nameID: 'Thêm Công Ty',
+                    middleware: 1
                 }
             },
             {   
@@ -183,7 +197,8 @@ const routes = [
                 component: XemCongTyComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Công Ty',
-                    nameID: 'Xem Công Ty'
+                    nameID: 'Xem Công Ty',
+                    middleware: 0
                 }
             },
             {   
@@ -192,7 +207,8 @@ const routes = [
                 component: SuaCongTyComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Công Ty',
-                    nameID: 'Sửa Thông Tin Công Ty'
+                    nameID: 'Sửa Thông Tin Công Ty',
+                    middleware: 1
                 }
             },
             //--------------------Khu Vực---------------------
@@ -202,7 +218,8 @@ const routes = [
                 component: DanhSachKhuVucComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Khu Vực',
-                    nameID: 'Danh Sách Khu Vực'
+                    nameID: 'Danh Sách Khu Vực',
+                    middleware: 0
                 }
             },
             {
@@ -211,7 +228,8 @@ const routes = [
                 component: ThemKhuVucComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Khu Vực',
-                    nameID: 'Thêm Khu Vực'
+                    nameID: 'Thêm Khu Vực',
+                    middleware: 1
                 }
             },
             {
@@ -220,7 +238,8 @@ const routes = [
                 component: SuaKhuVucComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Khu Vực',
-                    nameID: 'Sửa Khu Vực'
+                    nameID: 'Sửa Khu Vực',
+                    middleware: 1
                 }
             },
             //--------------------Mục Đích Sử Dụng Đất------------------
@@ -230,7 +249,8 @@ const routes = [
                 component: DanhSachMucDichSuDungDatComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Mục Đích Sử Dụng Đất',
-                    nameID: 'Danh Sách Mục Đích Sử Dụng Đất'
+                    nameID: 'Danh Sách Mục Đích Sử Dụng Đất',
+                    middleware: 0
                 }
             },
             {
@@ -239,7 +259,8 @@ const routes = [
                 component: ThemMucDichSuDungDatComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Mục Đích Sử Dụng Đất',
-                    nameID: 'Thêm Mục Đích Sử Dụng Đất'
+                    nameID: 'Thêm Mục Đích Sử Dụng Đất',
+                    middleware: 1
                 }
             },
             {
@@ -248,7 +269,8 @@ const routes = [
                 component: SuaMucDichSuDungDatComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Mục Đích Sử Dụng Đất',
-                    nameID: 'Sửa Mục Đích Sử Dụng Đất'
+                    nameID: 'Sửa Mục Đích Sử Dụng Đất',
+                    middleware: 1
                 }
             },
             {
@@ -257,7 +279,8 @@ const routes = [
                 component: XemMucDichSuDungDatComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Mục Đích Sử Dụng Đất',
-                    nameID: 'Xem Mục Đích Sử Dụng Đất'
+                    nameID: 'Xem Mục Đích Sử Dụng Đất',
+                    middleware: 0
                 }
             },
             //--------------------Hiện Trạng Vườn Cây------------------
@@ -267,7 +290,8 @@ const routes = [
                 component: DanhSachHienTrangVuonCayComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Hiện Trạng Vườn Cây',
-                    nameID: 'Danh Sách Hiện Trạng Vườn Cây'
+                    nameID: 'Danh Sách Hiện Trạng Vườn Cây',
+                    middleware: 0
                 }
             },
             {
@@ -276,7 +300,8 @@ const routes = [
                 component: ThemHienTrangVuonCayComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Hiện Trạng Vườn Cây',
-                    nameID: 'Thêm Hiện Trạng Vườn Cây'
+                    nameID: 'Thêm Hiện Trạng Vườn Cây',
+                    middleware: 1
                 }
             },
             {
@@ -285,7 +310,8 @@ const routes = [
                 component: SuaHienTrangVuonCayComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Hiện Trạng Vườn Cây',
-                    nameID: 'Sửa Hiện Trạng Vườn Cây'
+                    nameID: 'Sửa Hiện Trạng Vườn Cây',
+                    middleware: 1
                 }
             },
             {
@@ -294,7 +320,9 @@ const routes = [
                 component: XemHienTrangVuonCayComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Hiện Trạng Vườn Cây',
-                    nameID: 'Xem Hiện Trạng Vườn Cây'
+                    nameID: 'Xem Hiện Trạng Vườn Cây',
+                    middleware: 0
+                    
                 }
             },
             //--------------------Nông Trường------------------------
@@ -304,7 +332,8 @@ const routes = [
                 component: DanhSachNongTruongComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Nông Trường',
-                    nameID: 'Danh Sách Nông Trường'
+                    nameID: 'Danh Sách Nông Trường',
+                    middleware: 0
                 }
             },
             {
@@ -313,7 +342,8 @@ const routes = [
                 component: ThemNongTruongComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Nông Trường',
-                    nameID: 'Thêm Nông Trường'
+                    nameID: 'Thêm Nông Trường',
+                    middleware: 1
                 }
             },
             {
@@ -322,7 +352,8 @@ const routes = [
                 component: SuaNongTruongComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Nông Trường',
-                    nameID: 'Sửa Nông Trường'
+                    nameID: 'Sửa Nông Trường',
+                    middleware: 1
                 }
             },
             {
@@ -331,7 +362,8 @@ const routes = [
                 component: XemNongTruongComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Nông Trường',
-                    nameID: 'Xem Nông Trường'
+                    nameID: 'Xem Nông Trường',
+                    middleware: 0
                 }
             },
             //--------------------Phân Loại------------------------
@@ -341,7 +373,8 @@ const routes = [
                 component: DanhSachPhanLoaiComponent,
                 meta:{
                     title: 'Định Nghĩa Kí Hiệu / Phân Loại',
-                    nameID: 'Danh Sách Phân Loại'
+                    nameID: 'Danh Sách Phân Loại',
+                    middleware: 0
                 }
             },
             {
@@ -350,7 +383,8 @@ const routes = [
                 component: ThemPhanLoaiComponent,
                 meta:{
                     title: "Định Nghĩa Kí Hiệu / Phân Loại",
-                    nameID: 'Thêm Phân Loại'
+                    nameID: 'Thêm Phân Loại',
+                    middleware: 1
                 }
             },
             {
@@ -359,7 +393,8 @@ const routes = [
                 component: SuaPhanLoaiComponent,
                 meta:{
                     title: "Định Nghĩa Kí Hiệu / Phân Loại",
-                    nameID: 'Sửa Phân Loại'
+                    nameID: 'Sửa Phân Loại',
+                    middleware: 1
                 }
             },
             {
@@ -368,7 +403,8 @@ const routes = [
                 component: XemPhanLoaiComponent,
                 meta:{
                     title: "Định Nghĩa Kí Hiệu / Phân Loại",
-                    nameID: 'Xem Phân Loại'
+                    nameID: 'Xem Phân Loại',
+                    middleware: 0
                 }
             },
             //---------------------Lô Canh Tác----------------------
@@ -378,7 +414,8 @@ const routes = [
                 component: DanhSachLoCanhTacComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Lô Canh Tác',
-                    nameID: 'Danh Sách Lô Canh Tác'
+                    nameID: 'Danh Sách Lô Canh Tác',
+                    middleware: 0
                 }
             },
             {
@@ -387,7 +424,8 @@ const routes = [
                 component: ThemLoCanhTacComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Lô Canh Tác',
-                    nameID: 'Thêm Lô Canh Tác'
+                    nameID: 'Thêm Lô Canh Tác',
+                    middleware: 1
                 }
             },
             {
@@ -396,7 +434,8 @@ const routes = [
                 component: SuaLoCanhTacComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Lô Canh Tác',
-                    nameID: 'Sửa Lô Canh Tác'
+                    nameID: 'Sửa Lô Canh Tác',
+                    middleware: 1
                 }
             },
             {
@@ -405,7 +444,8 @@ const routes = [
                 component: XemLoCanhTacComponent,
                 meta:{
                     title: 'Quản Lí Nông Trường / Lô Canh Tác',
-                    nameID: 'Xem Lô Canh Tác'
+                    nameID: 'Xem Lô Canh Tác',
+                    middleware: 0
                 }
             },
         ]
@@ -413,9 +453,27 @@ const routes = [
     
 ]
 
+
+
 const router = new VueRouter({
     mode: 'hash',
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.middleware || to.meta.middleware === 0) {
+        if(VueCookies.get('token')!=null){
+            if( Number(VueCookies.get('role')) >= Number(to.meta.middleware)){
+                return next()
+            } else{
+                return next({ name: 'Error' })
+            }
+        }
+        else{
+            return next({ name: 'Login' })
+        }
+    }
+    return next()
 })
 
 const app = new Vue({

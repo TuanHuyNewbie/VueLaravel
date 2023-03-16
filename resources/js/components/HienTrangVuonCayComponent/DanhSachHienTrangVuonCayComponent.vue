@@ -2,12 +2,13 @@
     <div>
         <div style="padding: 0px 10px 10px 10px;">
             <div class="elevation-4" style="height: 60px;">
-                <v-row  style="width: 100%;">
+                <v-row style="width: 100%;">
                     <v-col cols="6" style="display: flex; justify-content: center;">
                         <b style="color: darkgreen; font-size: 30px;">{{ $route.meta.nameID }}</b>
                     </v-col>
                     <v-col cols="6" style="width: 100%; display: flex; justify-content: space-evenly;">
-                        <v-btn style="background-color: green;" @click="addHienTrangVuonCay()"><b>+ Thêm Mới</b></v-btn>
+                        <v-btn :disabled="disAble" style="background-color: green;" @click="addHienTrangVuonCay()"><b>+ Thêm
+                                Mới</b></v-btn>
                         <v-btn style="background-color: green;" @click="exportToExCel()"><b>Xuất File Excel</b></v-btn>
                         <v-btn style="background-color: green;"><b>Nhập File Excel</b></v-btn>
                     </v-col>
@@ -30,9 +31,13 @@
                     <template v-slot:item.action="{ item }">
                         <v-btn @click="changeAction(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-list</v-icon></v-btn><br>
                         <div v-show="item.id_hien_trang_vuon_cay == idAction && action">
-                            <v-btn color="green" @click="reviewHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-eye</v-icon></v-btn>
-                            <v-btn color="primary" @click="editHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa fa-pencil</v-icon></v-btn>
-                            <v-btn color="error" @click="deleteHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa
+                            <v-btn color="green" @click="reviewHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa
+                                    fa-eye</v-icon></v-btn>
+                            <v-btn :disabled="disAble" color="primary"
+                                @click="editHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa
+                                    fa-pencil</v-icon></v-btn>
+                            <v-btn :disabled="disAble" color="error"
+                                @click="deleteHienTrangVuonCay(item.id_hien_trang_vuon_cay)"><v-icon>fa
                                     fa-times</v-icon></v-btn>
                         </div>
                     </template>
@@ -48,6 +53,8 @@ import { json2excel, excel2json } from 'js2excel';
 export default {
     data() {
         return {
+            role: this.$cookies.get('role'),
+            disAble: true,
             idAction: '',
             action: false,
             search: '',
@@ -63,6 +70,7 @@ export default {
         }
     },
     created() {
+        this.role != 1 ? this.disAble = true : this.disAble = false;
         this.axios.get('/api/get-all-hien-trang-vuon-cay')
             .then((response) => {
                 this.desserts = response.data.data;
@@ -76,6 +84,7 @@ export default {
     },
     methods: {
         getAllHienTrangVuonCay() {
+            this.role != 1 ? this.disAble = true : this.disAble = false;
             this.axios.get('/api/get-all-hien-trang-vuon-cay')
                 .then((response) => {
                     this.desserts = response.data.data;
@@ -84,35 +93,14 @@ export default {
                     console.log(error);
                 })
         },
-        changeAction(e) {
-            this.idAction = e;
-            this.action = !this.action;
-        },
-        addHienTrangVuonCay(){
-            this.$router.push({ path: 'them-hien-trang-vuon-cay' });
-        },
-        editHienTrangVuonCay(id){
-            this.$router.push({ path: `sua-hien-trang-vuon-cay/${id}` });
-        },
-        deleteHienTrangVuonCay(id){
-            this.axios.delete(`/api/delete-hien-trang-vuon-cay/${id}`)
-            .then((response) => {
-                this.getAllHienTrangVuonCay();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        },
-        reviewHienTrangVuonCay(id){
-            this.$router.push({ path: `xem-hien-trang-vuon-cay/${id}` });
-        },
         exportToExCel() {
             let data = []
             this.desserts.forEach((dessert) => {
                 let obj = {
-                    "ID Hiện Trạng Vườn Cây": dessert.id_hien_trang_vuon_cay,
-                    "Ký Hiệu": dessert.ky_hieu,
-                    "Diễn Giải": dessert.dien_giai,
+                    "ID Công Ty": dessert.id_congty,
+                    "Tên Khu Vực": dessert.ten_khuvuc,
+                    "Mã Công Ty": dessert.ma_cong_ty,
+                    "Tên Công Ty": dessert.ten_cong_ty
                 }
                 data.push(obj);
             });
@@ -123,6 +111,28 @@ export default {
             } catch (e) {
                 console.error(e);
             }
+        },
+        changeAction(e) {
+            this.idAction = e;
+            this.action = !this.action;
+        },
+        addHienTrangVuonCay() {
+            this.$router.push({ path: 'them-hien-trang-vuon-cay' });
+        },
+        editHienTrangVuonCay(id) {
+            this.$router.push({ path: `sua-hien-trang-vuon-cay/${id}` });
+        },
+        deleteHienTrangVuonCay(id) {
+            this.axios.delete(`/api/delete-hien-trang-vuon-cay/${id}`)
+                .then((response) => {
+                    this.getAllHienTrangVuonCay();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+        reviewHienTrangVuonCay(id) {
+            this.$router.push({ path: `xem-hien-trang-vuon-cay/${id}` });
         },
     }
 
