@@ -1,5 +1,6 @@
 require('./bootstrap');
 import Vue from 'vue';
+import Vuex from 'vuex';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueRouter from 'vue-router';
@@ -48,12 +49,31 @@ import Cookies from 'js-cookie';
 import VueCookies from 'vue-cookies'
 import ErrorComponent from './components/ErrorComponent';
 import SignupComponent from './components/SignupComponent';
+
+import OpenLayerComponent from './components/OpenLayerComponent';
 // import VueSimpleAlert from "vue-simple-alert";
 // import vuetify from './plugins/vuetify'
 
 Vue.use(Cookies);
 Vue.use(VueCookies);
+Vue.use(Vuex);
 Vue.use(VueAxios, axios);
+
+const store = new Vuex.Store({
+    state: {
+      data: '1'
+    },
+    mutations: {
+      setData(state, payload) {
+        state.data = payload
+      }
+    },
+    actions: {
+      setData({commit}, payload) {
+        commit('setData', payload)
+      }
+    }
+  })
 // Vue.use(VueSimpleAlert);
 Vue.use(VueRouter);
 Vue.component('font-awesome-icon', FontAwesomeIcon) // Register component globally
@@ -83,6 +103,11 @@ const routes = [
         path: "/",
         name: "Example",
         component: ExampleComponent
+    },
+    {
+        path: "/map",
+        name: "Map",
+        component: OpenLayerComponent
     },
     {
         path: "/create",
@@ -478,6 +503,7 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     el: '#app',
+    store,
     router,
     vuetify: vuetify,
 });

@@ -51,7 +51,20 @@ class NguoiDungController extends Controller
     public function updateNguoiDung($id_nguoi_dung, Request $request){
         $password = md5(md5($request->get('mat_khau')));
         $date = Carbon::createFromFormat('d/m/Y', $request->get('ngay_sinh'))->format('Y-m-d');
-        $query = 'UPDATE `Nguoi_Dung` SET 
+        if($request->get('check_hinh_anh') == 'true'){
+            $file = $request->file('hinh_anh');
+            $file->move(public_path('\img'), $file->getClientOriginalName());
+            $query = 'UPDATE `Nguoi_Dung` SET 
+            `mat_khau` = "'.$password.'",
+            `ho_ten` = "'.$request->get('ho_ten').'",
+            `ngay_sinh` = "'.$date.'",
+            `gioi_tinh` = "'.$request->get('gioi_tinh').'",
+            `hinh_anh` = "'.$file->getClientOriginalName().'",
+            `chuc_vu` = "'.$request->get('chuc_vu').'",
+            `trang_thai` = "'.$request->get('trang_thai').'"
+            WHERE `id_nguoi_dung` = "'.$id_nguoi_dung.'"';
+        } else if($request->get('check_hinh_anh') == 'false') {
+            $query = 'UPDATE `Nguoi_Dung` SET 
             `mat_khau` = "'.$password.'",
             `ho_ten` = "'.$request->get('ho_ten').'",
             `ngay_sinh` = "'.$date.'",
@@ -60,6 +73,8 @@ class NguoiDungController extends Controller
             `chuc_vu` = "'.$request->get('chuc_vu').'",
             `trang_thai` = "'.$request->get('trang_thai').'"
             WHERE `id_nguoi_dung` = "'.$id_nguoi_dung.'"';
+        }
+
         $res = DB::select($query);
         return response()->json("Success");
     }

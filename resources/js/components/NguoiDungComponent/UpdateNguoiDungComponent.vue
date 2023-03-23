@@ -207,6 +207,8 @@
 export default {
     data() {
         return {
+            count: 1,
+            checkHinhAnh: false,
             date: new Date().toISOString().substr(0, 10),
             maxDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
             ngay_sinh: '',
@@ -214,7 +216,7 @@ export default {
             nguoiDung: {},
             valid: true,
             hinh_anh: '',
-            url: 'https://icons.veryicon.com/png/o/internet--web/iview-3-x-icons/md-contact.png',
+            url: '',
             trang_thai1: [
                 { value: '1', trang_thai2: 'Hoạt Động' },
                 { value: '2', trang_thai2: 'Không Hoạt Động' },
@@ -236,10 +238,15 @@ export default {
     },
     watch: {
         hinh_anh(e) {
+            this.count += 1;
+            if(this.count > 2){
+                this.checkHinhAnh = true;
+            }
             const file = e;
             if (this.hinh_anh == null) {
                 this.url = 'https://icons.veryicon.com/png/o/internet--web/iview-3-x-icons/md-contact.png'
             } else { this.url = URL.createObjectURL(file); }
+            
         }
     },
     methods: {
@@ -247,19 +254,30 @@ export default {
             await this.axios.get(`/api/get-one-nguoi-dung/${this.$route.params.id_nguoi_dung}`)
                 .then((result) => {
                     this.nguoiDung = result.data[0];
+                    this.hinh_anh = this.nguoiDung.hinh_anh;
+                    this.url = `../img/${this.nguoiDung.hinh_anh}`,
                     this.nguoiDung.ngay_sinh = this.formatDate(this.nguoiDung.ngay_sinh);
+                    this.checkHinhAnh = false;
                 })
         },
         async created() {
             let formData = new FormData();
             // formData.append('ten_dang_nhap', this.ten_dang_nhap);
+            if(this.checkHinhAnh == true){
+                formData.append('check_hinh_anh', 'true');
+                formData.append('hinh_anh', this.hinh_anh);
+            }else{
+                formData.append('check_hinh_anh', 'false');
+                formData.append('hinh_anh', this.hinh_anh);
+            }
             formData.append('mat_khau', this.nguoiDung.mat_khau);
             formData.append('ho_ten', this.nguoiDung.ho_ten);
             formData.append('ngay_sinh', this.nguoiDung.ngay_sinh);
             formData.append('gioi_tinh', this.nguoiDung.gioi_tinh);
-            formData.append('hinh_anh', this.nguoiDung.hinh_anh);
+            // formData.append('hinh_anh', this.hinh_anh);
             formData.append('chuc_vu', this.nguoiDung.chuc_vu);
             formData.append('trang_thai', String(this.nguoiDung.trang_thai));
+            console.log(this.nguoiDung, this.hinh_anh, this.checkHinhAnh)
             await this.axios.post(`/api/update-nguoi-dung/${this.nguoiDung.id_nguoi_dung}`, formData)
                 .then((result) => {
                     this.$router.push({ name: 'Danh Sach Nguoi Dung' });
